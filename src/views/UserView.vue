@@ -7,6 +7,18 @@
             <input v-model="user.passwordHash" type="password" placeholder="密码" required />
             <button type="submit">提交</button>
         </form>
+
+        <!-- 查询用户拥有的藏品 -->
+        <form @submit.prevent="handleQueryUserCollectibles">
+            <input v-model="userId" type="number" placeholder="用户ID" required />
+            <button type="submit">查询</button>
+        </form>
+        <!-- 藏品列表 -->
+        <ul>
+            <li v-for="item in userCollectibles" :key="item.collectibleId">
+                {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
+            </li>
+        </ul>
         <!-- 用户列表 -->
         <ul>
             <li v-for="user in users" :key="user.userId">
@@ -31,13 +43,17 @@
 
 <script setup lang="ts">
 import { User } from '@/pojo/User';
+import { DigitalCollectible } from "@/pojo/DigitalCollectible";
 import { ref, onMounted, type Ref } from 'vue';
-import { createUserAPI, deleteUserAPI, getAllUsersAPI, updateUserAPI } from '@/api';
+import { createUserAPI, deleteUserAPI, getAllUsersAPI, getUserByIdAPI, updateUserAPI } from '@/api';
 
 const users: Ref<User[]> = ref([] as User[]);
 const user: Ref<User> = ref({ username: '', email: '', passwordHash: '' } as User);
 const isEditing = ref(false);
 const currentUser: Ref<User> = ref({} as User);
+
+const userId: Ref<number> = ref(0);
+const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 
 const fetchUsers = async (): Promise<void> => {
     users.value = (await getAllUsersAPI()).data;
@@ -68,6 +84,11 @@ const handleDeleteUser = async (userId: number): Promise<void> => {
 const handleCancelEdit = () => {
     isEditing.value = false;
     currentUser.value = {} as User;
+};
+
+const handleQueryUserCollectibles = async (): Promise<void> => {
+    const user: User = (await getUserByIdAPI(userId.value)).data as User;
+    userCollectibles.value = [...user.collectibles];
 };
 
 onMounted(fetchUsers);

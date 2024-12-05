@@ -5,6 +5,7 @@ export class DigitalCollectible {
     ownerId: number;
     name: string;
     description: string;
+    price: number;
     metadata: string;
     creationDate: Date;
     status: string;
@@ -15,6 +16,7 @@ export class DigitalCollectible {
         ownerId: number = 0,
         name: string = '',
         description: string = '',
+        price: number = 0,
         metadata: string = '',
         creationDate: Date = new Date(),
         status: string = 'active',
@@ -24,6 +26,7 @@ export class DigitalCollectible {
         this.ownerId = ownerId;
         this.name = name;
         this.description = description;
+        this.price = price;
         this.metadata = metadata;
         this.creationDate = creationDate;
         this.status = status;
