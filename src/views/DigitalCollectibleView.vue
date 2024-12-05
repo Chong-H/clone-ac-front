@@ -2,9 +2,13 @@
     <div>
         <!-- 数字收藏品表单 -->
         <form @submit.prevent="handleSubmitCollectible">
+            <!-- TODO -->
+            <input v-model="collectible.owner.userId" type="number" placeholder="所有者ID" required />
             <input v-model="collectible.name" placeholder="名称" required />
             <input v-model="collectible.description" placeholder="描述" required />
             <input v-model="collectible.price" type="number" placeholder="价格" required />
+            <input v-model="collectible.status" placeholder="状态" required />
+            <input v-model="collectible.verificationStatus" placeholder="验证状态" required />
             <button type="submit">提交</button>
         </form>
         <!-- 数字收藏品列表 -->
@@ -19,9 +23,12 @@
         <div v-if="isEditing">
             <h2>编辑数字收藏品</h2>
             <form @submit.prevent="handleUpdateCollectible">
+                <input v-model="currentCollectible.owner.userId" type="number" placeholder="所有者ID" required />
                 <input v-model="currentCollectible.name" placeholder="名称" required />
                 <input v-model="currentCollectible.description" placeholder="描述" required />
                 <input v-model="currentCollectible.price" type="number" placeholder="价格" required />
+                <input v-model="currentCollectible.status" placeholder="状态" required />
+                <input v-model="currentCollectible.verificationStatus" placeholder="验证状态" required />
                 <button type="submit">更新</button>
                 <button type="button" @click="handleCancelEdit">取消</button>
             </form>
@@ -35,7 +42,14 @@ import { ref, onMounted, type Ref } from 'vue';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
-const collectible: Ref<DigitalCollectible> = ref({ name: '', description: '', price: 0 } as DigitalCollectible);
+const collectible: Ref<DigitalCollectible> = ref({
+    owner: { userId: 0 },
+    name: '',
+    description: '',
+    price: 0,
+    status: '',
+    verificationStatus: ''
+} as DigitalCollectible);
 const isEditing = ref(false);
 const currentCollectible: Ref<DigitalCollectible> = ref({} as DigitalCollectible);
 

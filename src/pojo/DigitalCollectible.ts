@@ -1,8 +1,13 @@
-import { User } from './User';
+class Owner {
+    userId: number
+    constructor(userId: number = 0) {
+        this.userId = userId;
+    }
+}
 
 export class DigitalCollectible {
     collectibleId: number;
-    ownerId: number;
+    owner: Owner;
     name: string;
     description: string;
     price: number;
@@ -13,7 +18,7 @@ export class DigitalCollectible {
 
     constructor(
         collectibleId: number = 0,
-        ownerId: number = 0,
+        owner: Owner = new Owner(),
         name: string = '',
         description: string = '',
         price: number = 0,
@@ -23,7 +28,7 @@ export class DigitalCollectible {
         verificationStatus: string = 'pending'
     ) {
         this.collectibleId = collectibleId;
-        this.ownerId = ownerId;
+        this.owner = owner;
         this.name = name;
         this.description = description;
         this.price = price;
