@@ -2,7 +2,6 @@
     <div>
         <!-- 数字收藏品表单 -->
         <form @submit.prevent="handleSubmitCollectible">
-            <!-- TODO -->
             <input v-model="collectible.owner.userId" type="number" placeholder="所有者ID" required />
             <input v-model="collectible.name" placeholder="名称" required />
             <input v-model="collectible.description" placeholder="描述" required />
