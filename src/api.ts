@@ -30,11 +30,6 @@ export const getAllCollectiblesAPI = async () => {
     return response.data;
 };
 
-export const getCollectibleOwnerById = async (id: number) => {
-    const response = await axios.get(`${API_BASE_URL}/collectibles/${id}/owner`);
-    return response.data;
-}
-
 // User API
 export const createUserAPI = async (user: any) => {
     const response = await axios.post(`${API_BASE_URL}/users`, user);

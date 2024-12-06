@@ -28,8 +28,8 @@
                 <input v-model="currentCollectibleCreate.price" type="number" placeholder="价格" required />
                 <input v-model="currentCollectibleCreate.status" placeholder="状态" required />
                 <input v-model="currentCollectibleCreate.verificationStatus" placeholder="验证状态" required />
-                <button type="submit">更新</button>
-                <button type="button" @click="handleCancelEdit">取消</button>
+                <button type="submit" @click="handleEdit(false)">更新</button>
+                <button type="button" @click="handleEdit(true)">取消</button>
             </form>
         </div>
     </div>
@@ -39,7 +39,7 @@
 import { DigitalCollectibleCreate, Owner } from '@/pojo/DigitalCollectibleCreate';
 import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, onMounted, type Ref } from 'vue';
-import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI, getCollectibleOwnerById } from '@/api';
+import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import type { User } from '@/pojo/User';
 
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
@@ -57,11 +57,9 @@ const handleSubmitCollectible = async (): Promise<void> => {
     fetchCollectibles();
 };
 
-const handleEditCollectible = async (item: DigitalCollectible) => {
-    let owner: User = (await getCollectibleOwnerById(item.collectibleId)).data;
-    console.log("Owner ID: ", owner.userId);
+const handleEditCollectible = (item: DigitalCollectible) => {
     isEditing.value = true;
-    currentCollectibleCreate.value = { ...item, owner: new Owner(owner.userId) };
+    currentCollectibleCreate.value = { ...item, owner: { userId: item.owner } };
 };
 
 const handleUpdateCollectible = async (): Promise<void> => {
@@ -75,7 +73,17 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
     fetchCollectibles();
 };
 
-const handleCancelEdit = () => {
+const handleEdit = async (is_cancel: boolean) => {
+    if (!is_cancel) {
+        let response: DigitalCollectible | null = (await updateCollectibleAPI(currentCollectibleCreate.value.collectibleId, currentCollectibleCreate.value)).data;
+        if (response != null) {
+            alert("Collectible is updated!");
+            console.log("Collectible is updated: ", response);
+        } else {
+            alert("Collectible is not updated!");
+        }
+    }
+
     isEditing.value = false;
     currentCollectibleCreate.value = new DigitalCollectibleCreate();
 };
