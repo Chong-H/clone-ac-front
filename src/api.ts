@@ -1,5 +1,6 @@
 import axios from 'axios';
 import { DigitalCollectible } from './pojo/DigitalCollectible';
+import { UserLoginDto } from './pojo/dto/UserLoginDto';
 
 const API_BASE_URL = '/api';
 
@@ -55,3 +56,8 @@ export const getAllUsersAPI = async () => {
     console.log(response.data);
     return response.data;
 };
+
+export const userLoginAPI = async (user: UserLoginDto) => {
+    const response = await axios.post(`${API_BASE_URL}/users/login`, user);
+    return response.data;
+}
