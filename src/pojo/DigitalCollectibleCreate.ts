@@ -1,5 +1,12 @@
-export class DigitalCollectible {
+export class Owner {
+    userId: number
+    constructor(userId: number = 0) {
+        this.userId = userId;
+    }
+}
+export class DigitalCollectibleCreate {
     collectibleId: number;
+    owner: Owner;
     name: string;
     description: string;
     price: number;
@@ -10,6 +17,7 @@ export class DigitalCollectible {
 
     constructor(
         collectibleId: number = 0,
+        owner: Owner = new Owner(),
         name: string = '',
         description: string = '',
         price: number = 0,
@@ -19,6 +27,7 @@ export class DigitalCollectible {
         verificationStatus: string = 'pending'
     ) {
         this.collectibleId = collectibleId;
+        this.owner = owner;
         this.name = name;
         this.description = description;
         this.price = price;

@@ -2,12 +2,12 @@
     <div>
         <!-- 数字收藏品表单 -->
         <form @submit.prevent="handleSubmitCollectible">
-            <input v-model="collectible.owner.userId" type="number" placeholder="所有者ID" required />
-            <input v-model="collectible.name" placeholder="名称" required />
-            <input v-model="collectible.description" placeholder="描述" required />
-            <input v-model="collectible.price" type="number" placeholder="价格" required />
-            <input v-model="collectible.status" placeholder="状态" required />
-            <input v-model="collectible.verificationStatus" placeholder="验证状态" required />
+            <input v-model="collectibleCreate.owner.userId" type="number" placeholder="所有者ID" required />
+            <input v-model="collectibleCreate.name" placeholder="名称" required />
+            <input v-model="collectibleCreate.description" placeholder="描述" required />
+            <input v-model="collectibleCreate.price" type="number" placeholder="价格" required />
+            <input v-model="collectibleCreate.status" placeholder="状态" required />
+            <input v-model="collectibleCreate.verificationStatus" placeholder="验证状态" required />
             <button type="submit">提交</button>
         </form>
         <!-- 数字收藏品列表 -->
@@ -22,12 +22,12 @@
         <div v-if="isEditing">
             <h2>编辑数字收藏品</h2>
             <form @submit.prevent="handleUpdateCollectible">
-                <input v-model="currentCollectible.owner.userId" type="number" placeholder="所有者ID" required />
-                <input v-model="currentCollectible.name" placeholder="名称" required />
-                <input v-model="currentCollectible.description" placeholder="描述" required />
-                <input v-model="currentCollectible.price" type="number" placeholder="价格" required />
-                <input v-model="currentCollectible.status" placeholder="状态" required />
-                <input v-model="currentCollectible.verificationStatus" placeholder="验证状态" required />
+                <input v-model="currentCollectibleCreate.owner.userId" type="number" placeholder="所有者ID" required />
+                <input v-model="currentCollectibleCreate.name" placeholder="名称" required />
+                <input v-model="currentCollectibleCreate.description" placeholder="描述" required />
+                <input v-model="currentCollectibleCreate.price" type="number" placeholder="价格" required />
+                <input v-model="currentCollectibleCreate.status" placeholder="状态" required />
+                <input v-model="currentCollectibleCreate.verificationStatus" placeholder="验证状态" required />
                 <button type="submit">更新</button>
                 <button type="button" @click="handleCancelEdit">取消</button>
             </form>
@@ -36,21 +36,16 @@
 </template>
 
 <script setup lang="ts">
+import { DigitalCollectibleCreate, Owner } from '@/pojo/DigitalCollectibleCreate';
 import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, onMounted, type Ref } from 'vue';
-import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
+import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI, getCollectibleOwnerById } from '@/api';
+import type { User } from '@/pojo/User';
 
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
-const collectible: Ref<DigitalCollectible> = ref({
-    owner: { userId: 0 },
-    name: '',
-    description: '',
-    price: 0,
-    status: '',
-    verificationStatus: ''
-} as DigitalCollectible);
+const collectibleCreate: Ref<DigitalCollectibleCreate> = ref(new DigitalCollectibleCreate);
 const isEditing = ref(false);
-const currentCollectible: Ref<DigitalCollectible> = ref({} as DigitalCollectible);
+const currentCollectibleCreate: Ref<DigitalCollectibleCreate> = ref(new DigitalCollectibleCreate());
 
 const fetchCollectibles = async (): Promise<void> => {
     collectibles.value = (await getAllCollectiblesAPI()).data;
@@ -58,17 +53,19 @@ const fetchCollectibles = async (): Promise<void> => {
 };
 
 const handleSubmitCollectible = async (): Promise<void> => {
-    await createCollectibleAPI(collectible.value);
+    await createCollectibleAPI(collectibleCreate.value);
     fetchCollectibles();
 };
 
-const handleEditCollectible = (item: DigitalCollectible) => {
+const handleEditCollectible = async (item: DigitalCollectible) => {
+    let owner: User = (await getCollectibleOwnerById(item.collectibleId)).data;
+    console.log("Owner ID: ", owner.userId);
     isEditing.value = true;
-    currentCollectible.value = { ...item };
+    currentCollectibleCreate.value = { ...item, owner: new Owner(owner.userId) };
 };
 
 const handleUpdateCollectible = async (): Promise<void> => {
-    await updateCollectibleAPI(currentCollectible.value.collectibleId, currentCollectible.value);
+    await updateCollectibleAPI(currentCollectibleCreate.value.collectibleId, currentCollectibleCreate.value);
     isEditing.value = false;
     fetchCollectibles();
 };
@@ -80,7 +77,7 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
 
 const handleCancelEdit = () => {
     isEditing.value = false;
-    currentCollectible.value = {} as DigitalCollectible;
+    currentCollectibleCreate.value = new DigitalCollectibleCreate();
 };
 
 onMounted(fetchCollectibles);
