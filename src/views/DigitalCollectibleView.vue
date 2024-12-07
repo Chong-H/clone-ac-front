@@ -3,7 +3,7 @@
         <!-- 数字收藏品表单 -->
         <div>
             <h2>添加数字收藏品</h2>
-            <DigitalCollectibleForm :key="collectible.collectibleId" :collectible="collectible"
+            <DigitalCollectibleForm :key="collectible.collectibleId" :collectible="collectible" confirm-button-text="添加"
                 @confirm="handleCreateConfirm" />
         </div>
         <!-- 数字收藏品列表 -->
@@ -18,7 +18,7 @@
         <div v-if="isEditing">
             <h2>编辑数字收藏品</h2>
             <DigitalCollectibleForm :key="currentCollectible.collectibleId" :collectible="currentCollectible"
-                @confirm="handleEditConfirm" />
+                confirm-button-text="更新" @confirm="handleEditConfirm" />
         </div>
     </div>
 </template>

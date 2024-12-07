@@ -28,7 +28,7 @@ interface Props {
 
 const {
     collectible,
-    confirmButtonText = '更新',
+    confirmButtonText = '确认',
 } = defineProps<Props>();
 
 const currentCollectibleCreate: Ref<DigitalCollectible> = ref(collectible);
