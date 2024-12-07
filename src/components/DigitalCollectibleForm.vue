@@ -7,7 +7,7 @@
             <input v-model="currentCollectibleCreate.price" type="number" placeholder="价格" required />
             <input v-model="currentCollectibleCreate.status" placeholder="状态" required />
             <input v-model="currentCollectibleCreate.verificationStatus" placeholder="验证状态" required />
-            <button type="button" @click="handleEdit(false)">更新</button>
+            <button type="button" @click="handleEdit(false)">{{ confirmButtonText }}</button>
             <button type="button" @click="handleEdit(true)">取消</button>
         </form>
     </div>
@@ -21,11 +21,17 @@ const emit = defineEmits<{
     (event: 'confirm', collectible: DigitalCollectible | null): void,
 }>();
 
-const props = defineProps<{
+interface Props {
     collectible: DigitalCollectible,
-}>();
+    confirmButtonText?: string,
+}
 
-const currentCollectibleCreate: Ref<DigitalCollectible> = ref(props.collectible);
+const {
+    collectible,
+    confirmButtonText = '更新',
+} = defineProps<Props>();
+
+const currentCollectibleCreate: Ref<DigitalCollectible> = ref(collectible);
 
 function handleEdit(is_cancel: boolean): void {
     if (is_cancel) {
