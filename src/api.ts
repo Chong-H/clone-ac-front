@@ -1,16 +1,16 @@
 import axios from 'axios';
-import { DigitalCollectibleCreate } from './pojo/DigitalCollectibleCreate';
 import { UserLoginDto } from './pojo/dto/UserLoginDto';
+import { DigitalCollectible } from './pojo/DigitalCollectible';
 
 const API_BASE_URL = '/api';
 
 // DigitalCollectible API
-export const createCollectibleAPI = async (collectible: DigitalCollectibleCreate) => {
+export const createCollectibleAPI = async (collectible: DigitalCollectible) => {
     const response = await axios.post(`${API_BASE_URL}/collectibles`, collectible);
     return response.data;
 };
 
-export const updateCollectibleAPI = async (id: number, collectible: DigitalCollectibleCreate) => {
+export const updateCollectibleAPI = async (id: number, collectible: DigitalCollectible) => {
     const response = await axios.put(`${API_BASE_URL}/collectibles/${id}`, collectible);
     return response.data;
 };
