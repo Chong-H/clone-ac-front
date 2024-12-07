@@ -29,15 +29,27 @@ import { ref, onMounted, type Ref } from 'vue';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import DigitalCollectibleForm from '@/components/DigitalCollectibleForm.vue';
 
-const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
-const collectible: Ref<DigitalCollectible> = ref(new DigitalCollectible);
-const isEditing = ref(false);
-const currentCollectible: Ref<DigitalCollectible> = ref(new DigitalCollectible());
-
+// 初始化
 const fetchCollectibles = async (): Promise<void> => {
     collectibles.value = (await getAllCollectiblesAPI()).data;
     console.log("A collectible is fetched: ", collectibles.value[0]);
 };
+onMounted(fetchCollectibles);
+
+// 创建
+const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
+const collectible: Ref<DigitalCollectible> = ref(new DigitalCollectible);
+async function handleCreateConfirm(collectible: DigitalCollectible | null): Promise<void> {
+    if (collectible == null) {
+        return;
+    }
+    await createCollectibleAPI(collectible);
+    collectible = new DigitalCollectible();
+    fetchCollectibles();
+}
+// 编辑
+const isEditing = ref(false);
+const currentCollectible: Ref<DigitalCollectible> = ref(new DigitalCollectible());
 
 const handleEditCollectible = (item: DigitalCollectible) => {
     currentCollectible.value = { ...item };
@@ -56,17 +68,6 @@ async function handleEditConfirm(collectible: DigitalCollectible | null): Promis
     isEditing.value = false;
     fetchCollectibles();
 }
-
-async function handleCreateConfirm(collectible: DigitalCollectible | null): Promise<void> {
-    if (collectible == null) {
-        return;
-    }
-    await createCollectibleAPI(collectible);
-    collectible = new DigitalCollectible();
-    fetchCollectibles();
-}
-
-onMounted(fetchCollectibles);
 </script>
 
 <style scoped>
