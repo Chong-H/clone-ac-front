@@ -1,7 +1,7 @@
 <template>
     <h2> UserId : {{ user.userId }}</h2>
 
-    <form @submit.prevent="handleLogin">
+    <form v-if="!init">
         <div>
             <label for="email">Email</label>
             <input type="email" id="email" v-model="userLoginDto.email" />
@@ -10,7 +10,8 @@
             <label for="password">Password</label>
             <input type="password" id="password" v-model="userLoginDto.password" />
         </div>
-        <button type="submit">Login</button>
+        <button type="button" @click="handleLogin">Login</button>
+        <button type="button" @click="handleLogout">Logout</button>
     </form>
 
     <div class="cards-wrapper">
@@ -20,17 +21,27 @@
 </template>
 
 <script setup lang="ts">
-import { ref, type Ref } from 'vue';
+import { onMounted, ref, type Ref } from 'vue';
 import { UserLoginDto } from '@/pojo/dto/UserLoginDto';
 import { User } from '@/pojo/User';
-import { userLoginAPI, updateCollectibleStatusAPI, getUserByIdAPI, getSessionUserAPI } from '@/api';
+import { userLoginAPI, updateCollectibleStatusAPI, getUserByIdAPI, getSessionUserAPI, logoutAPI } from '@/api';
 import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { DigitalCollectibleStatus } from '@/utils/DigitalCollectibleStatus';
 import CollectibleToOwner from '@/components/CollectibleToOwner.vue';
+import { store } from '@/store';
 
+const init: Ref<boolean> = ref(true);
 const userLoginDto: Ref<UserLoginDto> = ref({ email: '', password: '' } as UserLoginDto);
 const user: Ref<User> = ref({} as User);
 const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
+
+onMounted(async () => {
+    if (store.userId != -1) {
+        user.value = (await getUserByIdAPI(store.userId)).data;
+        userCollectibles.value = user.value.collectibles;
+    }
+    init.value = false;
+});
 
 const handleLogin = async (): Promise<void> => {
     console.log("User login: ", userLoginDto.value);
@@ -41,10 +52,18 @@ const handleLogin = async (): Promise<void> => {
     if (user.value != null) {
         alert("Login successfully!");
         userCollectibles.value = user.value.collectibles;
+        store.userId = user.value.userId;
     } else {
         alert("Login failed!");
     }
 };
+
+async function handleLogout(): Promise<void> {
+    await logoutAPI();
+    store.userId = -1;
+    user.value = {} as User;
+    userCollectibles.value = [];
+}
 
 async function handleChangeStatus(collectible: DigitalCollectible): Promise<void> {
     let status: string;

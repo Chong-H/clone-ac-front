@@ -60,7 +60,6 @@ export const getUserByIdAPI = async (id: number): Promise<ResponseMessage<User>>
 
 export const getAllUsersAPI = async (): Promise<ResponseMessage<User[]>> => {
     const response = await axios.get(`${API_BASE_URL}/users`);
-    console.log(response.data);
     return response.data;
 };
 
