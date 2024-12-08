@@ -10,6 +10,7 @@ export class User {
     createdAt?: Date;
     updatedAt?: Date;
     collectibles: DigitalCollectible[];
+    balance: number;
 
     constructor(
         userId: number = 0,
@@ -20,7 +21,8 @@ export class User {
         blockchainId: string | undefined = undefined,
         createdAt: Date | undefined = undefined,
         updatedAt: Date | undefined = undefined,
-        collectibles: DigitalCollectible[] = []
+        collectibles: DigitalCollectible[] = [],
+        balance: number = 0.0
     ) {
         this.userId = userId;
         this.username = username;
@@ -31,6 +33,6 @@ export class User {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.collectibles = collectibles;
+        this.balance = balance;
     }
-
 }

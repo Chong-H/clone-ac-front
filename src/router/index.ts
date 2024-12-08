@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import UserView from '@/views/UserView.vue'
+import UserManageView from '@/views/UserManageView.vue'
 import DigitalCollectibleView from '@/views/DigitalCollectibleView.vue'
 import UserLoginView from '@/views/UserLoginView.vue'
 
@@ -14,7 +14,7 @@ const router = createRouter({
     {
       path: '/user-view',
       name: 'user-view',
-      component: UserView,
+      component: UserManageView,
     },
     {
       path: '/digital-collectible-view',

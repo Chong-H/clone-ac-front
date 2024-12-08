@@ -4,8 +4,7 @@
         <label>{{ collectible.owner }}</label>
         <label>{{ collectible.description }}</label>
         <label>{{ collectible.price }}</label>
-        <label>{{ collectible.status }}</label>
-        <button @click="emit('change-status', collectible)">change status</button>
+        <button @click="emit('purchase', collectible)">purchase</button>
     </div>
 </template>
 
@@ -21,7 +20,7 @@ const {
 } = defineProps<Props>();
 
 const emit = defineEmits<{
-    (event: 'change-status', collectible: DigitalCollectible): void,
+    (event: 'purchase', collectible: DigitalCollectible): void,
 }>();
 </script>
 

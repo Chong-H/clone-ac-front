@@ -6,7 +6,7 @@ import { RouterLink, RouterView } from 'vue-router'
   <header>
     <div class="nav">
       <RouterLink to="/">UserLoginView</RouterLink>
-      <RouterLink to="/user-view">UserView</RouterLink>
+      <RouterLink to="/user-view">UserManageView</RouterLink>
       <RouterLink to="/digital-collectible-view">DigitalCollectibleView</RouterLink>
     </div>
   </header>
