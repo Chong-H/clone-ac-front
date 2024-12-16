@@ -31,3 +31,8 @@ pnpm dev
 ```sh
 pnpm build
 ```
+
+
+## just s test
+ i changed some local config 
+
