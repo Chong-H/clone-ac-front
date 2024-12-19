@@ -14,10 +14,24 @@
         <button type="button" @click="handleLogout">Logout</button>
     </form>
 
+    <form v-if="!init">
+        <div>
+            <label >still have no account? </label>
+        
+        <a href="/Sign" class="button-style">Sign a Account</a>
+        
+        <label>About Us</label>
+        <a href="/about" class="button-style">Go to About</a>
+    </div>
+         
+    </form>
+    
+
     <div class="cards-wrapper">
         <CollectibleToOwner v-for="collectible in userCollectibles" :key="collectible.collectibleId"
             :collectible="collectible" @change-status="handleChangeStatus" />
     </div>
+
 </template>
 
 <script setup lang="ts">
@@ -30,10 +44,17 @@ import { DigitalCollectibleStatus } from '@/utils/DigitalCollectibleStatus';
 import CollectibleToOwner from '@/components/CollectibleToOwner.vue';
 import { store } from '@/store';
 
+
+
+
 const init: Ref<boolean> = ref(true);
 const userLoginDto: Ref<UserLoginDto> = ref({ email: '', password: '' } as UserLoginDto);
 const user: Ref<User> = ref({} as User);
 const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
+
+
+
+
 
 onMounted(async () => {
     if (store.userId != -1) {
@@ -69,6 +90,7 @@ const handleLogin = async (): Promise<void> => {
     }
     //alert("Login failed!");
 };
+
 
 async function handleLogout(): Promise<void> {
     await logoutAPI();

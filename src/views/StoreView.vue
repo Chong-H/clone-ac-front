@@ -1,26 +1,20 @@
 <template>
     <div>
-        <!-- 数字收藏品表单 -->
-        <div>
-            <h2>添加数字收藏品</h2>
-            <DigitalCollectibleForm :key="collectible.collectibleId" :collectible="collectible" confirm-button-text="添加"
-                @confirm="handleCreateConfirm" />
-        </div>
-        <!-- 数字收藏品列表 -->
-        <ul>
+        <div class="user-layout">
+            <ul>
             <label>UserId-Name_Price lists</label>
             <li v-for="item in collectibles" :key="item.collectibleId">
                 {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
                 <button @click="handleEditCollectible(item)">编辑</button>
                 <button @click="handleDeleteCollectible(item.collectibleId)">删除</button>
             </li>
-        </ul>
-        <!-- 编辑表单 -->
-        <div v-if="isEditing">
-            <h2>编辑数字收藏品</h2>
-            <DigitalCollectibleForm :key="currentCollectible.collectibleId" :collectible="currentCollectible"
-                confirm-button-text="更新" @confirm="handleEditConfirm" />
+            </ul>
         </div>
+        <!-- <div>
+            <h2>数字收藏品</h2>
+            <DigitalCollectibleForm :key="collectible.collectibleId" :collectible="collectible" confirm-button-text="添加"
+                @confirm="handleCreateConfirm" />
+        </div> -->
     </div>
 </template>
 

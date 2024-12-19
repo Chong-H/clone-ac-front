@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="user-layout">
-            <!-- 用户表单 -->
+            <!-- 用户表单
             <form @submit.prevent="handleSubmitUser" class="user-form">
                 <label>register sector/注册页面</label>
                 <input v-model="user.username" placeholder="用户名" required />
@@ -11,7 +11,7 @@
                 <input v-model="user.passwordHash" type="password" placeholder="密码" required />
                 
                 <button type="submit">提交</button>
-            </form>
+            </form> -->
 
             <!-- 查询用户拥有的藏品 -->
             <form @submit.prevent="handleQueryUserCollectibles" class="query-form">
@@ -71,10 +71,10 @@ const fetchUsers = async (): Promise<void> => {
     console.log("A user is fetched: ", users.value[0]);
 };
 
-const handleSubmitUser = async (): Promise<void> => {
-    await createUserAPI(user.value);
-    fetchUsers();
-};
+// const handleSubmitUser = async (): Promise<void> => {
+//     await createUserAPI(user.value);
+//     fetchUsers();
+// };
 
 const handleEditUser = (user: User) => {
     isEditing.value = true;
