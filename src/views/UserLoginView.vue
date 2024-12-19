@@ -45,17 +45,29 @@ onMounted(async () => {
 
 const handleLogin = async (): Promise<void> => {
     console.log("User login: ", userLoginDto.value);
-    await userLoginAPI(userLoginDto.value);
+    //await userLoginAPI(userLoginDto.value);
+    try{
+        await userLoginAPI(userLoginDto.value);
+    }catch (error) {
+        console.error("Login error:", error);
+        alert("Login failed!");
+    }
+    //if (Response.status === 200) {
     let id = (await getSessionUserAPI()).data;
     user.value = (await getUserByIdAPI(id)).data;
+
+
+    
 
     if (user.value != null) {
         alert("Login successfully!");
         userCollectibles.value = user.value.collectibles;
         store.userId = user.value.userId;
-    } else {
+        
+    } else if(user.value == -1) {
         alert("Login failed!");
     }
+    //alert("Login failed!");
 };
 
 async function handleLogout(): Promise<void> {
