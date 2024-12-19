@@ -79,7 +79,7 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
 
 async function handlePurchase(collectible: DigitalCollectible): Promise<void> {//处理购买
     const newOwnerId = store.userId ;
-    collectible.collectibleId=newOwnerId;
+    collectible.owner=newOwnerId;
     if (collectible != null) {
         const response =  await updateCollectibleAPI(collectible.collectibleId, collectible);
         if (response.code === 200) {
