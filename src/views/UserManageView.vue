@@ -22,17 +22,20 @@
             </form>
             <!-- 藏品列表 -->
             <ul class="collectibles-list">
+                <label>藏品展示</label>
                 <li v-for="item in userCollectibles" :key="item.collectibleId">
                     {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
                 </li>
             </ul>
             <!-- 用户列表 -->
             <ul class="users-list">
+                <label>账号管理:用户id-名字-邮箱</label>
                 <li v-for="user in users" :key="user.userId">
                     {{ user.userId }} - {{ user.username }} - {{ user.email }}
                     <button @click="handleEditUser(user)">编辑</button>
                     <button @click="handleDeleteUser(user.userId)">删除</button>
                 </li>
+                
             </ul>
             <!-- 编辑表单 -->
             <div v-if="isEditing" class="edit-form">
@@ -98,6 +101,7 @@ const handleQueryUserCollectibles = async (): Promise<void> => {
     const user: User = (await getUserByIdAPI(userId.value)).data as User;
     userCollectibles.value=[];
     userCollectibles.value = [...user.collectibles];
+    if(userCollectibles.value==null){ }//
 };
 
 onMounted(fetchUsers);
