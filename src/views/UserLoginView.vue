@@ -16,7 +16,7 @@
 
     <div class="cards-wrapper">
         <CollectibleToOwner v-for="collectible in userCollectibles" :key="collectible.collectibleId"
-            :collectible="collectible" @change-status="handleChangeStatus" />
+            :collectible="collectible" @change-status="handleChangeStatus" @send="handleSend" />
     </div>
 
     <form>
@@ -50,7 +50,7 @@ import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { DigitalCollectibleStatus } from '@/utils/DigitalCollectibleStatus';
 import CollectibleToOwner from '@/components/CollectibleToOwner.vue';
 import { store } from '@/store';
-
+import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 
 
 
@@ -123,6 +123,33 @@ async function handleChangeStatus(collectible: DigitalCollectible): Promise<void
     await updateCollectibleStatusAPI(collectible.collectibleId, status);
     let res = await getUserByIdAPI(user.value.userId);
     user.value = res.data;
+}
+
+
+async function handleSend(collectible: DigitalCollectible): Promise<void> {
+    const inputElement = document.getElementById('myNumber') as HTMLInputElement;
+    const numberValue = parseInt(inputElement.value, 10); // 正确获取 value 并转换为整数
+    console.log(numberValue);
+
+    collectible.owner=numberValue;
+    if (collectible != null) {
+        const response =  await updateCollectibleAPI(collectible.collectibleId, collectible);
+        if (response.code === 200) {
+         // 更新成功
+         alert("send successfully!");
+        //console.log('Collectible updated successfully:', response.data);
+        } else {
+         // 更新失败
+         alert("Failed to send!");
+        //console.error('Failed to update collectible:', response.message);
+        }  
+         }
+    
+    
+         
+    // await updateCollectibleStatusAPI(collectible.collectibleId, status);
+    // let res = await getUserByIdAPI(user.value.userId);
+    // user.value = res.data;
 }
 
 </script>
