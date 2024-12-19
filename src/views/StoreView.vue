@@ -2,6 +2,8 @@
     <div>
         <div class="user-layout">
             <ul>
+                <p>User ID: {{ store.userId }}</p>
+                <!-- <button @click="updateUserId">Update User ID</button> -->
             <label>UserId-Name_Price lists</label>
             <li v-for="item in collectibles" :key="item.collectibleId">
                 {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
@@ -13,21 +15,32 @@
         <!-- 编辑表单 -->
         <div v-if="isEditing">
             <h2>购买数字收藏品</h2>
-            <CollectibleToCustomer :key="currentCollectible.collectibleId" :collectible="currentCollectible"/>
+            <CollectibleToCustomer :key="currentCollectible.collectibleId" :collectible="currentCollectible"
+              @purchase="handlePurchase"/>
         </div>
 
-        
+
         
     </div>
 </template>
 
 <script setup lang="ts">
+
+import { User } from '@/pojo/User';
 import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, onMounted, type Ref } from 'vue';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import DigitalCollectibleForm from '@/components/DigitalCollectibleForm.vue';
 import CollectibleToCustomer from '@/components/CollectibleToCustomer.vue';
+import { store } from '@/store'; 
 
+
+
+// function updateUserId() {
+//   store.userId = 123; // 修改 store 中的 userId
+// }
+
+const user: Ref<User> = ref({} as User);
 const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
@@ -61,16 +74,27 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
     fetchCollectibles();
 };
 
-async function handleChangeStatus(collectible: DigitalCollectible): Promise<void> {
-    // let status: string;
-    // if (collectible.status === DigitalCollectibleStatus.ACTIVE) {
-    //     status = DigitalCollectibleStatus.INACTIVE;
-    // } else {
-    //     status = DigitalCollectibleStatus.ACTIVE;
-    // }
-    // await updateCollectibleStatusAPI(collectible.collectibleId, status);
-    // let res = await getUserByIdAPI(user.value.userId);
-    // user.value = res.data;
+//传递参数过来
+
+
+async function handlePurchase(collectible: DigitalCollectible): Promise<void> {//处理购买
+    const newOwnerId = store.userId ;
+    collectible.collectibleId=newOwnerId;
+    if (collectible != null) {
+        const response =  await updateCollectibleAPI(collectible.collectibleId, collectible);
+        if (response.code === 200) {
+         // 更新成功
+         alert("Collectible updated successfully!");
+        //console.log('Collectible updated successfully:', response.data);
+        } else {
+         // 更新失败
+         alert("Failed to update collectible!");
+        //console.error('Failed to update collectible:', response.message);
+        }  
+         }
+    
+    isEditing.value = false;
+    fetchCollectibles();
 }
 
 async function handleEditConfirm(collectible: DigitalCollectible | null): Promise<void> {

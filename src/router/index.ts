@@ -3,7 +3,7 @@ import UserManageView from '@/views/UserManageView.vue'
 import DigitalCollectibleView from '@/views/DigitalCollectibleView.vue'
 import UserLoginView from '@/views/UserLoginView.vue'
 //import StoreView from '@/views/StoreView.vue'
-import StoreView from '@/views/storeView.vue'
+import StoreView from '@/views/StoreView.vue'
 import SignView from '@/views/SignView.vue'
 import AboutView from '@/views/AboutView.vue'
 
