@@ -5,10 +5,15 @@ import { RouterLink, RouterView } from 'vue-router'
 <template>
   <header>
     <div class="nav">
+      <!-- Login -->
       <RouterLink to="/">UserLoginView</RouterLink>
+      <!-- sign up for -->
       <RouterLink to="/Sign">SignView</RouterLink>
+      <!-- admin view -->
       <RouterLink to="/user-view">UserManageView</RouterLink>
+      <!-- launch goods -->
       <RouterLink to="/digital-collectible-view">DigitalCollectibleView</RouterLink>
+      <!-- transmit hall -->
       <RouterLink to="/Store">StoreView</RouterLink>
       
     </div>

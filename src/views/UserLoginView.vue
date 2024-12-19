@@ -17,11 +17,13 @@
     <form v-if="!init">
         <div>
             <label >still have no account? </label>
-        
         <a href="/Sign" class="button-style">Sign a Account</a>
-        
+
         <label>About Us</label>
         <a href="/about" class="button-style">Go to About</a>
+
+        <label>Admin?</label>
+        <a href="/user-view" class="button-style">Go to Admin Page</a>
     </div>
          
     </form>
@@ -72,6 +74,7 @@ const handleLogin = async (): Promise<void> => {
     }catch (error) {
         console.error("Login error:", error);
         alert("Login failed!");
+        return;
     }
     //if (Response.status === 200) {
     let id = (await getSessionUserAPI()).data;
