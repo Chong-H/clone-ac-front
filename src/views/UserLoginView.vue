@@ -16,7 +16,7 @@
 
     <div class="cards-wrapper">
         <CollectibleToOwner v-for="collectible in userCollectibles" :key="collectible.collectibleId"
-            :collectible="collectible" @change-status="handleChangeStatus" @send="handleSend" />
+            :collectible="collectible" @change-status="handleChangeStatus" @send="handleSend" @smash="handleSmash" />
     </div>
 
     <form>
@@ -150,6 +150,18 @@ async function handleSend(collectible: DigitalCollectible): Promise<void> {
     // await updateCollectibleStatusAPI(collectible.collectibleId, status);
     // let res = await getUserByIdAPI(user.value.userId);
     // user.value = res.data;
+}
+handleSmash
+
+async function handleSmash(collectible: DigitalCollectible): Promise<void> {
+
+    if (collectible != null) {
+        const response =  await deleteCollectibleAPI(collectible.collectibleId);
+      
+         alert("smash successfully!");
+        
+         }
+    
 }
 
 </script>
