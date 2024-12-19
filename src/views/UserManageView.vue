@@ -3,14 +3,20 @@
         <div class="user-layout">
             <!-- 用户表单 -->
             <form @submit.prevent="handleSubmitUser" class="user-form">
+                <label>register sector/注册页面</label>
                 <input v-model="user.username" placeholder="用户名" required />
+
                 <input v-model="user.email" type="email" placeholder="邮箱" required />
+                
                 <input v-model="user.passwordHash" type="password" placeholder="密码" required />
+                
                 <button type="submit">提交</button>
             </form>
 
             <!-- 查询用户拥有的藏品 -->
             <form @submit.prevent="handleQueryUserCollectibles" class="query-form">
+                <label>数字藏品查询页面</label>
+                <label>请输入查询帐号id</label>
                 <input v-model="userId" type="number" placeholder="用户ID" required />
                 <button type="submit">查询</button>
             </form>
@@ -90,6 +96,7 @@ const handleCancelEdit = () => {
 
 const handleQueryUserCollectibles = async (): Promise<void> => {
     const user: User = (await getUserByIdAPI(userId.value)).data as User;
+    userCollectibles.value=[];
     userCollectibles.value = [...user.collectibles];
 };
 
