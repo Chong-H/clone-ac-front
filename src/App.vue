@@ -16,7 +16,8 @@ import { RouterLink, RouterView } from 'vue-router'
       <RouterLink to="/digital-collectible-view">DigitalCollectibleView</RouterLink>
       <!-- transmit hall -->
       <RouterLink to="/Store">StoreView</RouterLink>
-      
+      <!-- message hall -->
+      <RouterLink to="/Message">MessageView</RouterLink>
     </div>
   </header>
   <RouterView />

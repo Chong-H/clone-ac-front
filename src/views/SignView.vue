@@ -41,35 +41,7 @@ const handleSubmitUser = async (): Promise<void> => {
     fetchUsers();
 };
 
-// const handleEditUser = (user: User) => {
-//     isEditing.value = true;
-//     currentUser.value = { ...user };
-// };
 
-// const handleUpdateUser = async (): Promise<void> => {
-//     await updateUserAPI(currentUser.value.userId, currentUser.value);
-//     isEditing.value = false;
-//     fetchUsers();
-// };
-
-// const handleDeleteUser = async (userId: number): Promise<void> => {
-//     await deleteUserAPI(userId);
-//     fetchUsers();
-// };
-
-// const handleCancelEdit = () => {
-//     isEditing.value = false;
-//     currentUser.value = {} as User;
-// };
-
-// const handleQueryUserCollectibles = async (): Promise<void> => {
-//     const user: User = (await getUserByIdAPI(userId.value)).data as User;
-//     userCollectibles.value=[];
-//     userCollectibles.value = [...user.collectibles];
-//     if(userCollectibles.value==null){ }//
-// };
-
-// onMounted(fetchUsers);
 </script>
 
 <style scoped>

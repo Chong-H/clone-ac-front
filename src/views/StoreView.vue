@@ -35,13 +35,6 @@ import CollectibleToCustomer from '@/components/CollectibleToCustomer.vue';
 import { store } from '@/store'; 
 
 
-
-// function updateUserId() {
-//   store.userId = 123; // 修改 store 中的 userId
-// }
-
-const user: Ref<User> = ref({} as User);
-const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
     collectibles.value = (await getAllCollectiblesAPI()).data;
