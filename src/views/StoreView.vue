@@ -5,16 +5,19 @@
             <label>UserId-Name_Price lists</label>
             <li v-for="item in collectibles" :key="item.collectibleId">
                 {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
-                <button @click="handleEditCollectible(item)">编辑</button>
-                <button @click="handleDeleteCollectible(item.collectibleId)">删除</button>
+                <button @click="handleEditCollectible(item)">购买</button>
+                <!-- <button @click="handleDeleteCollectible(item.collectibleId)">删除</button> -->
             </li>
             </ul>
         </div>
-        <!-- <div>
-            <h2>数字收藏品</h2>
-            <DigitalCollectibleForm :key="collectible.collectibleId" :collectible="collectible" confirm-button-text="添加"
-                @confirm="handleCreateConfirm" />
-        </div> -->
+        <!-- 编辑表单 -->
+        <div v-if="isEditing">
+            <h2>购买数字收藏品</h2>
+            <CollectibleToCustomer :key="currentCollectible.collectibleId" :collectible="currentCollectible"/>
+        </div>
+
+        
+        
     </div>
 </template>
 
@@ -23,7 +26,9 @@ import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, onMounted, type Ref } from 'vue';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import DigitalCollectibleForm from '@/components/DigitalCollectibleForm.vue';
+import CollectibleToCustomer from '@/components/CollectibleToCustomer.vue';
 
+const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
     collectibles.value = (await getAllCollectiblesAPI()).data;
@@ -55,6 +60,18 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
     await deleteCollectibleAPI(id);
     fetchCollectibles();
 };
+
+async function handleChangeStatus(collectible: DigitalCollectible): Promise<void> {
+    // let status: string;
+    // if (collectible.status === DigitalCollectibleStatus.ACTIVE) {
+    //     status = DigitalCollectibleStatus.INACTIVE;
+    // } else {
+    //     status = DigitalCollectibleStatus.ACTIVE;
+    // }
+    // await updateCollectibleStatusAPI(collectible.collectibleId, status);
+    // let res = await getUserByIdAPI(user.value.userId);
+    // user.value = res.data;
+}
 
 async function handleEditConfirm(collectible: DigitalCollectible | null): Promise<void> {
     if (collectible != null) {

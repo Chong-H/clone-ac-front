@@ -14,6 +14,14 @@
         <button type="button" @click="handleLogout">Logout</button>
     </form>
 
+    <div class="cards-wrapper">
+        <CollectibleToOwner v-for="collectible in userCollectibles" :key="collectible.collectibleId"
+            :collectible="collectible" @change-status="handleChangeStatus" />
+    </div>
+
+    <form>
+        <button type="button" @click="Market">Go to Market</button>
+    </form>
     <form v-if="!init">
         <div>
             <label >still have no account? </label>
@@ -29,10 +37,7 @@
     </form>
     
 
-    <div class="cards-wrapper">
-        <CollectibleToOwner v-for="collectible in userCollectibles" :key="collectible.collectibleId"
-            :collectible="collectible" @change-status="handleChangeStatus" />
-    </div>
+   
 
 </template>
 
@@ -87,7 +92,8 @@ const handleLogin = async (): Promise<void> => {
         alert("Login successfully!");
         userCollectibles.value = user.value.collectibles;
         store.userId = user.value.userId;
-        
+        // 跳转到指定的 URL
+        //window.location.href = 'http://localhost:5173/Store';
     } else if(user.value == -1) {
         alert("Login failed!");
     }
@@ -100,6 +106,11 @@ async function handleLogout(): Promise<void> {
     store.userId = -1;
     user.value = {} as User;
     userCollectibles.value = [];
+}
+
+async function Market(): Promise<void> {
+    // 跳转到指定的 URL
+    window.location.href ='http://localhost:5173/Store';
 }
 
 async function handleChangeStatus(collectible: DigitalCollectible): Promise<void> {
