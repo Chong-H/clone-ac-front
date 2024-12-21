@@ -1,38 +1,38 @@
 <template>
     <div>
-        <!-- 数字收藏品表单 -->
-        <div>
-            <h2>添加/发行数字收藏品</h2>
-            <DigitalCollectibleForm :key="collectible.collectibleId" :collectible="collectible" confirm-button-text="添加"
-                @confirm="handleCreateConfirm" />
-        </div>
-        <!-- 数字收藏品列表 -->
-        <ul>
+        <div class="user-layout">
+            <ul>
+                <p>User ID: {{ store.userId }}</p>
+                <!-- <button @click="updateUserId">Update User ID</button> -->
             <label>UserId-Name_Price lists</label>
             <li v-for="item in collectibles" :key="item.collectibleId">
                 {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
-                <button @click="handleEditCollectible(item)">编辑</button>
-                <button @click="handleDeleteCollectible(item.collectibleId)">删除</button>
+                <button @click="handleEditCollectible(item)">购买</button>
+                <!-- <button @click="handleDeleteCollectible(item.collectibleId)">删除</button> -->
             </li>
-        </ul>
+            </ul>
+        </div>
         <!-- 编辑表单 -->
         <div v-if="isEditing">
-            <h2>编辑数字收藏品</h2>
-            <DigitalCollectibleForm :key="currentCollectible.collectibleId" :collectible="currentCollectible"
-                confirm-button-text="更新" @confirm="handleEditConfirm" />
+            <h2>购买数字收藏品</h2>
+            <CollectibleToCustomer :key="currentCollectible.collectibleId" :collectible="currentCollectible"
+              @purchase="handlePurchase"/>
         </div>
+
+
+        
     </div>
 </template>
 
 <script setup lang="ts">
+
+import { User } from '@/pojo/User';
 import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, onMounted, type Ref } from 'vue';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import DigitalCollectibleForm from '@/components/DigitalCollectibleForm.vue';
-import { addTransaction } from '@/api';
-import { TransactionDto } from '@/pojo/dto/TransactionDto';
+import CollectibleToCustomer from '@/components/CollectibleToCustomer.vue';
 import { store } from '@/store'; 
-
 
 
 // 初始化
@@ -42,67 +42,17 @@ const fetchCollectibles = async (): Promise<void> => {
 };
 onMounted(fetchCollectibles);
 
-
+// 创建
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 const collectible: Ref<DigitalCollectible> = ref(new DigitalCollectible);
 async function handleCreateConfirm(collectible: DigitalCollectible | null): Promise<void> {
     if (collectible == null) {
         return;
     }
-
-    //await createCollectibleAPI(collectible); //true
-//????????????????????????????????????????????????????????????????????????
-    
-    let intValue     =(await  createCollectibleAPI(collectible)).data.collectibleId;
-
-
-
-
-const transactionData1 = {
-    buyerId: collectible==null ?999:collectible.owner,
-    transactionId: null, // 显式设置为null
-    sellerId: -1,
-    collectibleId: intValue,
-    transactionDate: null, // 显式设置为null
-    ifReadByBuyer: 0,
-    ifReadBySeller: 0,
-    };
-
-    if(collectible!=null){
-  addTransaction(transactionData1)
-    .then((responseMessage) => {
-        if (responseMessage.code === 200) {
-            console.log('交易添加成功:', responseMessage.data);
-            // 处理成功逻辑
-        } else {
-            console.error('交易添加失败:', responseMessage.message);
-            // 处理失败逻辑
-        }
-    })
-    .catch((error) => {
-        console.error('请求过程中发生错误:', error);
-        // 处理请求错误逻辑
-    });
-    }
-
-
-
-
-
-
-
-//
+    await createCollectibleAPI(collectible);
     collectible = new DigitalCollectible();
-
     fetchCollectibles();
-
-    
-    
-    
-};
-
-
-
+}
 // 编辑
 const isEditing = ref(false);
 const currentCollectible: Ref<DigitalCollectible> = ref(new DigitalCollectible());
@@ -116,6 +66,29 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
     await deleteCollectibleAPI(id);
     fetchCollectibles();
 };
+
+//传递参数过来
+
+
+async function handlePurchase(collectible: DigitalCollectible): Promise<void> {//处理购买
+    const newOwnerId = store.userId ;
+    collectible.owner=newOwnerId;
+    if (collectible != null) {
+        const response =  await updateCollectibleAPI(collectible.collectibleId, collectible);
+        if (response.code === 200) {
+         // 更新成功
+         alert("Collectible updated successfully!");
+        //console.log('Collectible updated successfully:', response.data);
+        } else {
+         // 更新失败
+         alert("Failed to update collectible!");
+        //console.error('Failed to update collectible:', response.message);
+        }  
+         }
+    
+    isEditing.value = false;
+    fetchCollectibles();
+}
 
 async function handleEditConfirm(collectible: DigitalCollectible | null): Promise<void> {
     if (collectible != null) {

@@ -6,6 +6,8 @@ import router from './router'
 import { store } from './store'
 import { getSessionUserAPI } from './api'
 
+
+
 getSessionUserAPI().then(response => {
     if (response.code === 200) {
         store.userId = response.data;
