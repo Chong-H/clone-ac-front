@@ -117,13 +117,29 @@ export const addTransaction = async (transactionData: TransactionDto): Promise<R
 
 
 };
+export const findTransaction = async (buyerId: Number): Promise<ResponseMessage<TransactionDto>> => {
+    try {
+        // 使用POST方法发送请求，并将transactionData作为请求体
+        
+        const response = await axios.get(`${API_BASE_URL}/transaction/${buyerId}`);
+        // 假设后端返回的JSON可以直接转换为ResponseMessage实例
+        // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
+        return response.data as ResponseMessage<TransactionDto>;
+    } catch (error) {
+        console.error('获取交易记录失败:', error);
+        throw error;
+    }
+
+
+
+};
 export const editTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<TransactionDto>> => {
     try {
         // 使用POST方法发送请求，并将transactionData作为请求体
         const now = new Date();
         const nowString = now.toISOString();
         transactionData.transactionDate=nowString;
-        const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
+        const response = await axios.put(`${API_BASE_URL}/transaction/change`, transactionData);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
         return response.data as ResponseMessage<TransactionDto>;
@@ -131,3 +147,17 @@ export const editTransaction = async (transactionData: TransactionDto): Promise<
         console.error('添加交易记录失败:', error);
         throw error;
     }
+}
+
+
+export const getAllTransactions = async (): Promise<ResponseMessage<Iterable<TransactionDto>>> => {
+    try {
+        // 使用GET方法发送请求，不需要传递任何参数
+        const response = await axios.get(`${API_BASE_URL}/transaction`);
+        // 假设后端返回的JSON可以直接转换为ResponseMessage实例
+        return response.data as ResponseMessage<Iterable<TransactionDto>>;
+    } catch (error) {
+        console.error('获取所有交易记录失败:', error);
+        throw error;
+    }
+};
