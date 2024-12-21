@@ -24,7 +24,7 @@
     </form>
     <form v-if="!init">
         <div>
-            <label >still have no account? </label>
+            <label >Still Have No Account? </label>
         <a href="/Sign" class="button-style">Sign a Account</a>
 
         <label>About Us</label>

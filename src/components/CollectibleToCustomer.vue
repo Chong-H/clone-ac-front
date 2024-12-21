@@ -1,9 +1,10 @@
 <template>
     <div class="wrapper">
-        <label>{{ collectible.name }}</label>
-        <label>{{ collectible.owner }}</label>
-        <label>{{ collectible.description }}</label>
-        <label>{{ collectible.price }}</label>
+        <!-- <label>商品</label> -->
+        <label>商品:    {{ collectible.name }}</label>
+        <label>物主id:    {{ collectible.owner }}</label>
+        <label>描述:    {{ collectible.description }}</label>
+        <label>价格:    {{ collectible.price }}</label>
         <button @click="emit('purchase', collectible)">purchase</button>
     </div>
 </template>

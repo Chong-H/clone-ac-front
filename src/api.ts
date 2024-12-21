@@ -1,8 +1,13 @@
 import axios from 'axios';
 import { User } from './pojo/User';
 import { ResponseMessage } from './pojo/ResponseMessage';
+import type { ApiResponse } from './pojo/apiTransactionResponse';
 import { UserLoginDto } from './pojo/dto/UserLoginDto';
 import { DigitalCollectible } from './pojo/DigitalCollectible';
+import type { TransactionDto } from './pojo/dto/TransactionDto';
+import type { Transaction } from './pojo/Transaction';
+//import { TransactionDto } from './pojo/dto/TransactionDto';
+//import { Transaction } from './pojo/Transaction';
 
 const API_BASE_URL = '/api';
 
@@ -77,3 +82,52 @@ export const getSessionUserAPI = async (): Promise<ResponseMessage<number>> => {
     const response = await axios.post(`${API_BASE_URL}/users/session`);
     return response.data;
 };
+
+
+// Transaction API
+// export const getAllTransactions = async () => {
+//     const response = await axios.get(`${API_BASE_URL}/Transaction`)
+//     return response.data;
+// };
+
+// export const addTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<number>> => {
+//     try {
+//         const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
+//         return response.data as ResponseMessage<number>;
+//     } catch (error) {
+//         console.error('添加交易记录失败:', error);
+//         throw error;
+//     }
+// };
+export const addTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<TransactionDto>> => {
+    try {
+        // 使用POST方法发送请求，并将transactionData作为请求体
+        const now = new Date();
+        const nowString = now.toISOString();
+        transactionData.transactionDate=nowString;
+        const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
+        // 假设后端返回的JSON可以直接转换为ResponseMessage实例
+        // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
+        return response.data as ResponseMessage<TransactionDto>;
+    } catch (error) {
+        console.error('添加交易记录失败:', error);
+        throw error;
+    }
+
+
+
+};
+export const editTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<TransactionDto>> => {
+    try {
+        // 使用POST方法发送请求，并将transactionData作为请求体
+        const now = new Date();
+        const nowString = now.toISOString();
+        transactionData.transactionDate=nowString;
+        const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
+        // 假设后端返回的JSON可以直接转换为ResponseMessage实例
+        // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
+        return response.data as ResponseMessage<TransactionDto>;
+    } catch (error) {
+        console.error('添加交易记录失败:', error);
+        throw error;
+    }
