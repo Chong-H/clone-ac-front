@@ -104,7 +104,7 @@ export const addTransaction = async (transactionData: TransactionDto): Promise<R
         // 使用POST方法发送请求，并将transactionData作为请求体
         const now = new Date();
         const nowString = now.toISOString();
-        transactionData.transactionDate=nowString;
+        transactionData.transactionDate = nowString;
         const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
@@ -122,7 +122,7 @@ export const editTransaction = async (transactionData: TransactionDto): Promise<
         // 使用POST方法发送请求，并将transactionData作为请求体
         const now = new Date();
         const nowString = now.toISOString();
-        transactionData.transactionDate=nowString;
+        transactionData.transactionDate = nowString;
         const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
@@ -131,3 +131,4 @@ export const editTransaction = async (transactionData: TransactionDto): Promise<
         console.error('添加交易记录失败:', error);
         throw error;
     }
+}
