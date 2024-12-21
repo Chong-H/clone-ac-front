@@ -29,6 +29,11 @@ import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, onMounted, type Ref } from 'vue';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import DigitalCollectibleForm from '@/components/DigitalCollectibleForm.vue';
+import { addTransaction } from '@/api';
+import { TransactionDto } from '@/pojo/dto/TransactionDto';
+import { store } from '@/store'; 
+
+
 
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
@@ -37,17 +42,67 @@ const fetchCollectibles = async (): Promise<void> => {
 };
 onMounted(fetchCollectibles);
 
-// 创建
+
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 const collectible: Ref<DigitalCollectible> = ref(new DigitalCollectible);
 async function handleCreateConfirm(collectible: DigitalCollectible | null): Promise<void> {
     if (collectible == null) {
         return;
     }
-    await createCollectibleAPI(collectible);
+
+    //await createCollectibleAPI(collectible); //true
+//????????????????????????????????????????????????????????????????????????
+    
+    let intValue     =(await  createCollectibleAPI(collectible)).data.collectibleId;
+
+
+
+
+const transactionData1 = {
+    buyerId: collectible==null ?999:collectible.owner,
+    transactionId: null, // 显式设置为null
+    sellerId: -1,
+    collectibleId: intValue,
+    transactionDate: null, // 显式设置为null
+    ifReadByBuyer: 0,
+    ifReadBySeller: 0,
+    };
+
+    if(collectible!=null){
+  addTransaction(transactionData1)
+    .then((responseMessage) => {
+        if (responseMessage.code === 200) {
+            console.log('交易添加成功:', responseMessage.data);
+            // 处理成功逻辑
+        } else {
+            console.error('交易添加失败:', responseMessage.message);
+            // 处理失败逻辑
+        }
+    })
+    .catch((error) => {
+        console.error('请求过程中发生错误:', error);
+        // 处理请求错误逻辑
+    });
+    }
+
+
+
+
+
+
+
+//
     collectible = new DigitalCollectible();
+
     fetchCollectibles();
-}
+
+    
+    
+    
+};
+
+
+
 // 编辑
 const isEditing = ref(false);
 const currentCollectible: Ref<DigitalCollectible> = ref(new DigitalCollectible());
