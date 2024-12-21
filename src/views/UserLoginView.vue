@@ -24,15 +24,14 @@
                 </div>
                 <div class="button-group">
                     <button type="button" @click="handleLogin" class="login-button">Login</button>
-                    <button type="button" @click="handleLogout" class="logout-button">Logout</button>
+                    <button type="button" @click="handleSignup" class="signup-button">sign up</button>
                 </div>
             </form>
 
             <!-- 其他链接应该放在卡片内部 -->
             <div class="additional-links">
-                <a href="/Sign">Still have no account?</a>
                 <a href="/about">About Us</a>
-                <a href="/user-view">Admin?</a>
+                <a href="/user-view">Admin</a>
             </div>
         </div>
     </div>
@@ -49,7 +48,10 @@ import { DigitalCollectibleStatus } from '@/utils/DigitalCollectibleStatus';
 import CollectibleToOwner from '@/components/CollectibleToOwner.vue';
 import { store } from '@/store';
 import { createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
+import { useRouter } from 'vue-router';
 
+// 在 setup 中声明 router
+const router = useRouter();
 const init: Ref<boolean> = ref(true);
 const userLoginDto: Ref<UserLoginDto> = ref({ email: '', password: '' } as UserLoginDto);
 const user: Ref<User> = ref({} as User);
@@ -89,6 +91,11 @@ const handleLogin = async (): Promise<void> => {
     }
     //alert("Login failed!");
 };
+
+async function handleSignup(): Promise<void> {
+    router.push('/sign');
+}
+
 
 async function handleLogout(): Promise<void> {
     await logoutAPI();
@@ -336,6 +343,19 @@ async function handleSmash(collectible: DigitalCollectible): Promise<void> {
 
 .additional-links a:hover {
     color: #ffa7d1;
+}
+
+
+.signup-button {
+    padding: 12px 20px;
+    border: none;
+    border-radius: 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: #f8f9fa;
+    color: #666;
+    border: 1px solid #ddd;
 }
 
 /* 欢迎文字样式优化 */
