@@ -24,7 +24,7 @@ import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { ref, type Ref } from 'vue';
 
 const emit = defineEmits<{
-    (event: 'confirm', collectible: DigitalCollectible | null): void,
+    (event: 'confirm', collectible: DigitalCollectible | null,): void,
 }>();
 
 interface Props {
