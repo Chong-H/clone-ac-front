@@ -1,13 +1,14 @@
 <template>
     <div class="wrapper">
-        <label>物品id</label>
-        <label>{{ trans.collectibleId == null ? null : trans.collectibleId }}</label>
+        <label>物品id      -    交易唯一ID</label>
+        <label>{{ trans.collectibleId == null?null:trans.collectibleId}}    -   {{trans.transactionId}}</label>
         <label>交易日期</label>
         <label>{{ trans.transactionDate }}</label>
-        <label>卖家</label>
-        <label>{{ trans.sellerId }}</label>
-        <label>买家</label>
-        <label>{{ trans.buyerId }}</label>
+        <label>卖家:是否已读</label>
+        <label>{{ trans.sellerId }}   : {{trans.ifReadBySeller}}</label>
+        <label>买家:是否已读</label>
+        <label>{{ trans.buyerId }}   : {{trans.ifReadByBuyer}}</label>
+        
         <button @click="emit('read', trans)">知道了</button>
         <button @click="emit('unread', trans)">设为未读</button>
     </div>

@@ -1,4 +1,4 @@
-// 假设前端项目结构中有一个类似的路径
+
 // src/pojo/transaction.ts
 
 export class Transaction {

@@ -139,7 +139,7 @@ export const editTransaction = async (transactionData: TransactionDto): Promise<
         // 使用POST方法发送请求，并将transactionData作为请求体
         const now = new Date();
         const nowString = now.toISOString();
-        transactionData.transactionDate = nowString;
+        //transactionData.transactionDate=nowString;
         const response = await axios.put(`${API_BASE_URL}/transaction/change`, transactionData);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
