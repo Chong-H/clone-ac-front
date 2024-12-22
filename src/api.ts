@@ -102,8 +102,8 @@ export const getSessionUserAPI = async (): Promise<ResponseMessage<number>> => {
 export const addTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<TransactionDto>> => {
     try {
         // 使用POST方法发送请求，并将transactionData作为请求体
-        
-        transactionData.transactionDate=getFormattedDate();
+
+        transactionData.transactionDate = getFormattedDate();
         const response = await axios.post(`${API_BASE_URL}/transaction`, transactionData);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
@@ -121,7 +121,7 @@ export const addTransaction = async (transactionData: TransactionDto): Promise<R
 export const findTransaction = async (buyerId: Number): Promise<ResponseMessage<TransactionDto>> => {
     try {
         // 使用POST方法发送请求，并将transactionData作为请求体
-        
+
         const response = await axios.get(`${API_BASE_URL}/transaction/${buyerId}`);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
@@ -139,7 +139,7 @@ export const editTransaction = async (transactionData: TransactionDto): Promise<
         // 使用POST方法发送请求，并将transactionData作为请求体
         const now = new Date();
         const nowString = now.toISOString();
-        transactionData.transactionDate=nowString;
+        transactionData.transactionDate = nowString;
         const response = await axios.put(`${API_BASE_URL}/transaction/change`, transactionData);
         // 假设后端返回的JSON可以直接转换为ResponseMessage实例
         // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
@@ -171,7 +171,7 @@ function getFormattedDate() {
     const hours = String(date.getHours()).padStart(2, '0');
     const minutes = String(date.getMinutes()).padStart(2, '0');
     const seconds = String(date.getSeconds()).padStart(2, '0');
-   
-  const localDateString = `$DateIs-${year}-${month}-${day}at${hours}:${minutes}:${seconds}`;
+
+    const localDateString = `$DateIs-${year}-${month}-${day}at${hours}:${minutes}:${seconds}`;
     return localDateString;
-  }
+}
