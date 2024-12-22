@@ -2,7 +2,7 @@
     <div class="login-container">
         <div class="login-card">
             <div class="avatar-container">
-                <img src="@/assets/logo1.png" alt="Logo" class="avatar">
+                <img src="@/assets/logo.webp" alt="Logo" class="avatar">
             </div>
             <h2 class="welcome-text">Welcome Back!</h2>
 
