@@ -10,6 +10,11 @@
             
         :trans="trans" @read="handleRead" @unread="handleUnread" />
         </div>
+        <div class="cards-wrapper">
+            <TransactionRecordView v-for="trans in transHiss1" :key="trans.transactionId ?? undefined"
+            
+        :trans="trans" @read="handleRead" @unread="handleUnread" />
+        </div>
     </div>
 </template>
 //collectionId
@@ -17,20 +22,25 @@
 import { User } from '@/pojo/User';
 //import { DigitalCollectible } from "@/pojo/DigitalCollectible";
 import { ref, onMounted, type Ref } from 'vue';
-import { getAllTransactions,createUserAPI, deleteUserAPI, getAllUsersAPI, getUserByIdAPI, updateUserAPI } from '@/api';
+import { editTransaction,getAllTransactions,createUserAPI, deleteUserAPI, getAllUsersAPI, getUserByIdAPI, updateUserAPI } from '@/api';
 import { store } from '@/store'; 
 import { TransactionDto } from '@/pojo/dto/TransactionDto';
 import TransactionRecordView from '@/components/TransactionRecordView.vue';
 
+
 const init: Ref<boolean> = ref(true);
+    
 const transHiss: Ref<TransactionDto[]> = ref([] as TransactionDto[]);
+const transHiss1: Ref<TransactionDto[]> = ref([] as TransactionDto[]);
+
 
 onMounted(async () => {
     if (store.userId !== -1) {
         try {
             const response = await getAllTransactions(); // 等待 Promise 解决
           // 将 Iterable 转换为数组
-          transHiss.value = Array.from(response.data).filter(trans => trans.buyerId==store.userId|| trans.sellerId==store.userId );
+          transHiss.value = Array.from(response.data).filter(trans => ((trans.buyerId==store.userId)&&(trans.ifReadByBuyer==0))||((trans.sellerId==store.userId)&&(trans.ifReadBySeller==0)) );
+          transHiss1.value = Array.from(response.data).filter(trans => ((trans.buyerId==store.userId)&&(trans.ifReadByBuyer==1))|| ((trans.sellerId==store.userId)&&(trans.ifReadBySeller==1) ));
         } catch (error) {
           console.error('获取所有交易记录失败:', error);
         }
@@ -38,23 +48,77 @@ onMounted(async () => {
     init.value = false;
 });
 
+
+
+// async function handleRead(trans: TransactionDto): Promise<void> {
+//     let status: number;
+//     if (trans.ifReadByBuyer === 1) {
+//         trans.ifReadByBuyer=0;
+//     }
+//     //editTransaction
+//     await editTransaction(trans);
+
+// }
 async function handleRead(trans: TransactionDto): Promise<void> {
-    let status: number;
-    if (trans.ifReadByBuyer === 1) {
-        trans.ifReadByBuyer=0;
+    try {
+        let status;
+        if(trans.buyerId==store.userId){
+        if (trans.ifReadByBuyer == 0) {
+            trans.ifReadByBuyer = 1;
+        }
+    }else  if(trans.sellerId==store.userId){
+        if (trans.ifReadBySeller == 0) {
+            trans.ifReadBySeller = 1;
+        }
     }
-
+        // 假设editTransaction是一个异步函数，需要await
+        await editTransaction(trans);
+    } catch (error) {
+        // 错误处理逻辑
+        alert("An error occurred while handling read transaction");
+        console.error('An error occurred while handling unread transaction:', error);
+        // 根据需要，可以在这里抛出错误或者返回错误信息
+        throw error; // 或者不抛出，根据业务逻辑决定
+    }
+    //location.href = location.href;
 }
 
-async function handleUnread(trans: TransactionDto): Promise<void> {
+// async function handleUnread(trans: TransactionDto): Promise<void> {
 
-    let status: number;
-    if (trans.ifReadByBuyer === 0) {
-        trans.ifReadByBuyer=1;
-    }
+//     let status: number;
+//     if (trans.ifReadByBuyer === 0) {
+//         trans.ifReadByBuyer=1;
+//     }
+
+//     await editTransaction(trans);
+
     
-}
+// }
+async function handleUnread(trans: TransactionDto): Promise<void> {
+    try {
+        let status;
+        if(trans.buyerId==store.userId){
+        if (trans.ifReadByBuyer == 1) {
+            trans.ifReadByBuyer = 0;
+        }
+    }
+    if(trans.sellerId==store.userId){
+        if (trans.ifReadBySeller == 1) {
+            trans.ifReadBySeller = 0;
+        }
+    }
+        // 假设editTransaction是一个异步函数，需要await
+        await editTransaction(trans);
+    } catch (error) {
+        // 错误处理逻辑
+        alert("An error occurred while handling unread transaction");
 
+        console.error('An error occurred while handling unread transaction:', error);
+        // 根据需要，可以在这里抛出错误或者返回错误信息
+        throw error; // 或者不抛出，根据业务逻辑决定
+    }
+    //location.href = location.href;
+}
 
 
 
