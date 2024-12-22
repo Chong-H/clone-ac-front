@@ -1,8 +1,12 @@
 <template>
     <div class="wrapper">
-        <label>{{ trans.collectibleId }}</label>
+        <label>物品id</label>
+        <label>{{ trans.collectibleId == null?null:trans.collectibleId}}</label>
+        <label>交易日期</label>
         <label>{{ trans.transactionDate }}</label>
+        <label>卖家</label>
         <label>{{ trans.sellerId }}</label>
+        <label>买家</label>
         <label>{{ trans.buyerId }}</label>
         <button @click="emit('read', trans)">知道了</button>
         <button @click="emit('unread', trans)">设为未读</button>
@@ -33,12 +37,21 @@ const emit = defineEmits<{
 <style scoped>
 /* label竖置 */
 .wrapper {
-    display: flex;
+    border: 1px solid #ddd; /* 边框 */
+    border-radius: 8px; /* 圆角 */
+    padding: 16px; /* 内边距 */
+    background-color: black; /* 背景颜色 */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 阴影 */
+    margin-bottom: 20px; /* 底部外边距 */
+    /* display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 10px;
     border: 1px solid black;
-    margin: 10px;
+    margin: 10px; */
 }
+
+
+
 </style>

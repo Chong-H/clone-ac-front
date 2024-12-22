@@ -63,7 +63,7 @@ const transactionData1 = {
     transactionId: null, // 显式设置为null
     sellerId: -1,
     collectibleId: intValue,
-    transactionDate: null, // 显式设置为null
+    transactionDate: getFormattedDate(), // 显式设置为null
     ifReadByBuyer: 0,
     ifReadBySeller: 0,
     };
@@ -123,6 +123,17 @@ async function handleEditConfirm(collectible: DigitalCollectible | null): Promis
     }
     isEditing.value = false;
     fetchCollectibles();
+}
+
+function getFormattedDate() {
+  const date = new Date();
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, '0'); // 月份从0开始，需要+1
+  const day = String(date.getDate()).padStart(2, '0');
+  const hours = String(date.getHours()).padStart(2, '0');
+  const minutes = String(date.getMinutes()).padStart(2, '0');
+  const seconds = String(date.getSeconds()).padStart(2, '0');
+  const localDateString = `DateIS${year}-${month}-${day}TimeIS${hours}:${minutes}:${seconds}`;  return localDateString;
 }
 </script>
 
