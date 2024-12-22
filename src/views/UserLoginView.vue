@@ -29,11 +29,12 @@
             </div>
         </div>
 
-        <div>
+        <!-- <div>
             <label for="password">Password</label>
             <input type="password" id="password" v-model="userLoginDto.password" />
-        </div>
-        <button type="button" @click="handleLogin">Login</button>
+        </div> -->
+
+        <!-- <button type="button" @click="handleLogin">Login</button>
         <button type="button" @click="handleLogout">Logout</button>
 
         <div class="cards-wrapper">
@@ -44,8 +45,9 @@
 
         <form>
             <button type="button" @click="Market">Go to Market</button>
-        </form>
-        <form v-if="!init">
+        </form> -->
+
+        <!-- <form v-if="!init">
             <div>
                 <label>Still Have No Account? </label>
                 <a href="/Sign" class="button-style">Sign a Account</a>
@@ -56,7 +58,7 @@
                 <label>Admin?</label>
                 <a href="/user-view" class="button-style">Go to Admin Page</a>
             </div>
-        </form>
+        </form> -->
     </div>
 </template>
 
