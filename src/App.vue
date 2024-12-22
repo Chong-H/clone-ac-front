@@ -28,41 +28,6 @@ import { RouterLink, RouterView } from 'vue-router'
   </div>
 </template>
 
-<!-- 全局样式，不加 scoped -->
-<style>
-/* 重置默认样式 */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-html,
-body,
-#app {
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  overflow-x: hidden;
-}
-
-#app {
-  display: flex;
-  flex-direction: column;
-  min-height: 100vh;
-  position: relative;
-  width: 100%;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  position: relative;
-  width: 100%;
-}
-</style>
-
 <!-- 组件局部样式 -->
 <style scoped>
 .app-container {
@@ -70,7 +35,7 @@ body,
   flex-direction: column;
   min-height: 100vh;
   width: 100%;
-  position: fixed;
+  /* position: fixed; */
 }
 
 .nav-header {
