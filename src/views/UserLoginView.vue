@@ -116,7 +116,7 @@ const handleLogin = async (): Promise<void> => {
         userCollectibles.value = user.value.collectibles;
         store.userId = user.value.userId;
         // 跳转到指定的 URL
-        //window.location.href = 'http://localhost:5173/Store';
+        router.push('/user-view');
     } else if (user.value == -1) {
         alert("Login failed!");
     }
