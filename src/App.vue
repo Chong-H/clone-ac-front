@@ -37,7 +37,9 @@ import { RouterLink, RouterView } from 'vue-router'
   box-sizing: border-box;
 }
 
-html, body, #app {
+html,
+body,
+#app {
   height: 100%;
   margin: 0;
   padding: 0;
@@ -86,5 +88,16 @@ html, body, #app {
   justify-content: space-around;
   align-items: center;
   padding: 0 20px;
+}
+
+.main-content {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  /* 水平居中 */
+  align-items: center;
+  /* 垂直居中 */
+  position: relative;
+  width: 100%;
 }
 </style>
