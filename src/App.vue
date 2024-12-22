@@ -20,6 +20,8 @@ import { RouterLink, RouterView } from 'vue-router'
         <RouterLink to="/Store">StoreView</RouterLink>
         <!-- message hall -->
         <RouterLink to="/Message">MessageView</RouterLink>
+        <!-- home hall -->
+        <RouterLink to="/MyHome">MyHome</RouterLink>
       </nav>
     </header>
     <main class="main-content">
