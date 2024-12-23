@@ -11,6 +11,23 @@
                 <!-- <button @click="handleDeleteCollectible(item.collectibleId)">删除</button> -->
             </li>
             </ul>
+
+
+        </div>
+
+        <div class="user-layout">
+            <ul>
+                <p> 你的在售</p>
+                <!-- <button @click="updateUserId">Update User ID</button> -->
+            <label>UserId-Name_Price lists</label>
+            <li v-for="item in collectibles1" :key="item.collectibleId">
+                {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
+                <button @click="handleEditCollectible(item)">购买</button>
+                <!-- <button @click="handleDeleteCollectible(item.collectibleId)">删除</button> -->
+            </li>
+            </ul>
+
+            
         </div>
         <!-- 编辑表单 -->
         <div v-if="isEditing">
@@ -37,12 +54,32 @@ import { store } from '@/store';
 
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
-    collectibles.value = ((await getAllCollectiblesAPI()).data).filter(collectible => ((collectible.status=="active")&&(collectible.verificationStatus=="ok")));
+    collectibles.value =
+     (        (await getAllCollectiblesAPI()).data).filter
+     (
+        collectible => (
+            
+        (collectible.status=="active")&&(collectible.verificationStatus=="ok")
+        &&(collectible.owner!=store.userId)
+
+        )
+    );
+    collectibles1.value =
+     (        (await getAllCollectiblesAPI()).data).filter
+     (
+        collectible => (
+            
+        (collectible.status=="active")&&(collectible.verificationStatus=="ok")
+        &&(collectible.owner==store.userId)
+
+        )
+    );
     console.log("A collectible is fetched: ", collectibles.value[0]);
 };
 onMounted(fetchCollectibles);
 
 // 创建
+const collectibles1: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 const collectible: Ref<DigitalCollectible> = ref(new DigitalCollectible);
 async function handleCreateConfirm(collectible: DigitalCollectible | null): Promise<void> {
@@ -71,6 +108,16 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
 
 
 async function handlePurchase(collectible: DigitalCollectible): Promise<void> {//处理购买
+    const transactionData1 = {
+    buyerId: collectible==null ?999:store.userId,
+    transactionId: null, // 显式设置为null
+    sellerId: collectible.owner,
+    collectibleId: collectible.collectibleId,
+    transactionDate: getFormattedDate(), // 显式设置为null
+    
+    ifReadByBuyer: 0,
+    ifReadBySeller: 0,
+    };
     if(collectible.verificationStatus !="ok"){
         alert("未经过审核不允许交易");
         return;
@@ -89,16 +136,7 @@ async function handlePurchase(collectible: DigitalCollectible): Promise<void> {/
 
 
     console.log(getFormattedDate());
-    const transactionData1 = {
-    buyerId: collectible==null ?999:store.userId,
-    transactionId: null, // 显式设置为null
-    sellerId: collectible.owner,
-    collectibleId: collectible.collectibleId,
-    transactionDate: getFormattedDate(), // 显式设置为null
     
-    ifReadByBuyer: 0,
-    ifReadBySeller: 0,
-    };
 
 
     if (collectible != null) {

@@ -22,11 +22,8 @@
             <TransactionRecordView v-for="trans in transHiss" :key="trans.transactionId ?? undefined" :trans="trans"
                 @read="handleRead" @unread="handleUnread" />
         </div>
-        <div class="cards-wrapper">
-            <TransactionRecordView v-for="trans in transHiss1" :key="trans.transactionId ?? undefined"
-            
-        :trans="trans" @read="handleRead" @unread="handleUnread" />
-        </div>
+
+        
         <label>下面是已读的交易记录</label>
         <hr>
         <div class="cards-wrapper">
@@ -72,12 +69,18 @@ const currentUser1 = reactive({
 });
 
 onMounted(async () => {
-    if (store.userId !== -1) {
+    if (store.userId !== -1) {                                   
         try {
             const response = await getAllTransactions(); // 等待 Promise 解决
           // 将 Iterable 转换为数组
-          transHiss.value = Array.from(response.data).filter(trans => ((trans.buyerId==store.userId)&&(trans.ifReadByBuyer==0))||((trans.sellerId==store.userId)&&(trans.ifReadBySeller==0)) ).reverse();
-          transHiss1.value = Array.from(response.data).filter(trans => ((trans.buyerId==store.userId)&&(trans.ifReadByBuyer==1))|| ((trans.sellerId==store.userId)&&(trans.ifReadBySeller==1) )).reverse();
+          transHiss.value = Array.from(response.data).filter(
+                trans => ( 
+                    (  trans.buyerId==store.userId&&trans.ifReadByBuyer==0 )||
+                    (  trans.sellerId==store.userId&&trans.ifReadBySeller==0)
+                 ) 
+         ).reverse();
+
+          transHiss1.value = Array.from(response.data).filter(trans => (      (  trans.buyerId==store.userId&&trans.ifReadByBuyer==1)|| (trans.sellerId==store.userId&&trans.ifReadBySeller==1  )         )).reverse();
         } catch (error) {
             console.error('获取所有交易记录失败:', error);
         }

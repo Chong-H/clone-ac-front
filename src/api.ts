@@ -100,6 +100,9 @@ export const getSessionUserAPI = async (): Promise<ResponseMessage<number>> => {
 //     }
 // };
 export const addTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<TransactionDto>> => {
+    if(transactionData.buyerId==transactionData.sellerId){
+        alert("买家不能是卖家");
+    }
     try {
         // 使用POST方法发送请求，并将transactionData作为请求体
 
@@ -112,7 +115,7 @@ export const addTransaction = async (transactionData: TransactionDto): Promise<R
         console.error('添加交易记录失败:', error);
         throw error;
     }
-
+    
 
 
 };
