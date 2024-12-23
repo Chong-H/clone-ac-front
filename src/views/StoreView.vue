@@ -71,6 +71,10 @@ const handleDeleteCollectible = async (id: number): Promise<void> => {
 
 
 async function handlePurchase(collectible: DigitalCollectible): Promise<void> {//处理购买
+    if(collectible.status!="ok"){
+        alert("未经过审核不允许交易");
+        return;
+    }
     if(collectible.owner==store.userId){
         alert("不能买自己的");
         return;
