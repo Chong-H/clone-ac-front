@@ -114,7 +114,10 @@ async function handleChangeStatus(collectible: DigitalCollectible): Promise<void
 }
 
 async function handleSend(collectible: DigitalCollectible): Promise<void> {
-
+    if(recipientId.value==store.userId){
+        alert("不能送给自己");
+        return;
+    }
     // if (inputElementRef.value) {
     // const numberValue = parseInt(inputElementRef.value.value, 10); // 获取值并转换为整数
     // console.log(numberValue); // 打印转换后的数值
