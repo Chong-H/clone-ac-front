@@ -1,20 +1,7 @@
 <template>
     <div class="login-container">
         
-         <!-- 编辑表单 -->
-         <div  >
-                <h2>编辑用户自己信息</h2>
-                <form @submit.prevent="handleUpdateUser">
-                    <label>用户名:</label>
-                    <input v-model="currentUser1.username" placeholder="用户名" required />
-                    <label>邮箱:</label>
-                    <input v-model="currentUser1.email" type="email" placeholder="邮箱" required />
-                    <label>密码:</label>
-                    <input v-model="currentUser1.passwordHash" type="password" placeholder="密码" required />
-                    <button type="submit">更新</button>
-                    <button type="button" @click="handleCancelEdit">取消</button>
-                </form>
-            </div>
+        
         
                 <p>User ID: {{ store.userId }}</p>
                 <!-- <button @click="updateUserId">Update User ID</button> -->

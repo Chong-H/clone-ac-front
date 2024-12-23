@@ -3,6 +3,19 @@
         <div class="user-layout">
             <p> User ID: {{ store.userId }}</p>
         </div>
+        <div  >
+                <h2>编辑用户自己信息</h2>
+                <form @submit.prevent="handleUpdateUser">
+                    <label>用户名:</label>
+                    <input v-model="currentUser1.username" placeholder="用户名" required />
+                    <label>邮箱:</label>
+                    <input v-model="currentUser1.email" type="email" placeholder="邮箱" required />
+                    <label>密码:</label>
+                    <input v-model="currentUser1.passwordHash" type="password" placeholder="密码" required />
+                    <button type="submit">更新</button>
+                    <button type="button" @click="handleCancelEdit">取消</button>
+                </form>
+            </div>
         <div class="cards-wrapper">
             <TransactionRecordView v-for="trans in transHiss" :key="trans.transactionId ?? undefined" :trans="trans"
                 @read="handleRead" @unread="handleUnread" />
@@ -28,13 +41,33 @@ import { editTransaction,getAllTransactions,createUserAPI, deleteUserAPI, getAll
 import { store } from '@/store'; 
 import { TransactionDto } from '@/pojo/dto/TransactionDto';
 import TransactionRecordView from '@/components/TransactionRecordView.vue';
+import { User } from '@/pojo/User';
+import { reactive } from 'vue';
 
 
 const init: Ref<boolean> = ref(true);
+    const isEditing = ref(false);
+    
     
 const transHiss: Ref<TransactionDto[]> = ref([] as TransactionDto[]);
 const transHiss1: Ref<TransactionDto[]> = ref([] as TransactionDto[]);
+    const recipientId = ref(0);
+const handleInputChange = (value: string) => {
+    recipientId.value = parseInt(value, 10);
+};
+const currentUser: Ref<User> = ref({} as User);
 
+
+const handleCancelEdit = () => {
+    isEditing.value = false;
+    currentUser.value = {} as User;
+};
+
+const currentUser1 = reactive({
+  username: '',
+  email: '',
+  passwordHash: ''
+});
 
 onMounted(async () => {
     if (store.userId !== -1) {
@@ -51,7 +84,15 @@ onMounted(async () => {
 });
 
 
-
+const handleUpdateUser = async (): Promise<void> => {
+    currentUser.value.username=currentUser1.username;
+    currentUser.value.email=currentUser1.email;
+    currentUser.value.passwordHash=currentUser1.passwordHash;
+  
+    await updateUserAPI(store.userId, currentUser.value);
+    
+    alert("修改成功");
+};
 // async function handleRead(trans: TransactionDto): Promise<void> {
 //     let status: number;
 //     if (trans.ifReadByBuyer === 1) {
