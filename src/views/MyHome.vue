@@ -3,6 +3,10 @@
         
 
         
+                <p>User ID: {{ store.userId }}</p>
+                <!-- <button @click="updateUserId">Update User ID</button> -->
+            <label>This is My Home</label>
+            <label>下面是你自己的藏品</label>
 
        
         <div class="cards-wrapper">

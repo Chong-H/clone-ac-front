@@ -7,7 +7,7 @@
         <label>{{ collectible.status }}</label>
         <button @click="emit('change-status', collectible)">change status</button>
         <label>赠送对象id</label>
-        <input @input="handleInput" type="number" id="myNumber"><\label>
+        <input @input="handleInput" type="number" id="myNumber">
         <!-- <input v-model="inputElementRef" type="number" id="myNumber"> -->
         <!-- <input type="text" id="myNumber" > </input> -->
         <button @click="emit('send', collectible)">send</button>
