@@ -5,6 +5,7 @@
         <label>物主id:    {{ collectible.owner }}</label>
         <label>描述:    {{ collectible.description }}</label>
         <label>价格:    {{ collectible.price }}</label>
+        <label>verify:  {{ collectible.verificationStatus }}</label>
         <button @click="emit('purchase', collectible)">purchase</button>
     </div>
 </template>

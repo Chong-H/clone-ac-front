@@ -2,9 +2,10 @@
     <div>
         <div class="user-layout">
             <p> User ID: {{ store.userId }}</p>
+            
         </div>
         <div  >
-                <h2>编辑用户自己信息</h2>
+                <h2>账号信息</h2>
                 <form @submit.prevent="handleUpdateUser">
                     <label>用户名:</label>
                     <input v-model="currentUser1.username" placeholder="用户名" required />
@@ -16,6 +17,7 @@
                     <button type="button" @click="handleCancelEdit">取消</button>
                 </form>
             </div>
+            <h2>交易信息</h2>
         <div class="cards-wrapper">
             <TransactionRecordView v-for="trans in transHiss" :key="trans.transactionId ?? undefined" :trans="trans"
                 @read="handleRead" @unread="handleUnread" />

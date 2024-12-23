@@ -8,8 +8,15 @@
         </div>
         <!-- 数字收藏品列表 -->
         <ul>
-            <label>UserId-Name_Price lists</label>
+            <label>UserId-Name_Price lists/待审核</label>
             <li v-for="item in collectibles" :key="item.collectibleId">
+                {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
+                <button @click="handleEditCollectible(item)">编辑</button>
+                <button @click="handleDeleteCollectible(item.collectibleId)">删除</button>
+            </li>
+            <label> ---------------------------------------</label>
+            <label>UserId-Name_Price lists/已经审核</label>
+            <li v-for="item in collectibles1" :key="item.collectibleId">
                 {{ item.collectibleId }} - {{ item.name }} - {{ item.price }}
                 <button @click="handleEditCollectible(item)">编辑</button>
                 <button @click="handleDeleteCollectible(item.collectibleId)">删除</button>
@@ -37,12 +44,13 @@ import { store } from '@/store';
 
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
-    collectibles.value = (await getAllCollectiblesAPI()).data;
+    collectibles.value = ((await getAllCollectiblesAPI()).data).filter(collectible=>collectible.verificationStatus!="ok");
+    collectibles1.value = ((await getAllCollectiblesAPI()).data).filter(collectible=>collectible.verificationStatus=="ok");
     console.log("A collectible is fetched: ", collectibles.value[0]);
 };
 onMounted(fetchCollectibles);
 
-
+const collectibles1: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 const collectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
 const collectible: Ref<DigitalCollectible> = ref(new DigitalCollectible);
 async function handleCreateConfirm(collectible: DigitalCollectible | null): Promise<void> {
@@ -95,7 +103,7 @@ const transactionData1 = {
     collectible = new DigitalCollectible();
 
     fetchCollectibles();
-
+    alert("success");
     
     
     
@@ -110,11 +118,15 @@ const currentCollectible: Ref<DigitalCollectible> = ref(new DigitalCollectible()
 const handleEditCollectible = (item: DigitalCollectible) => {
     currentCollectible.value = { ...item };
     isEditing.value = true;
+    
+    //alert("success");
 };
 
 const handleDeleteCollectible = async (id: number): Promise<void> => {
     await deleteCollectibleAPI(id);
     fetchCollectibles();
+    
+    alert(" del success");
 };
 
 async function handleEditConfirm(collectible: DigitalCollectible | null): Promise<void> {
@@ -123,6 +135,8 @@ async function handleEditConfirm(collectible: DigitalCollectible | null): Promis
     }
     isEditing.value = false;
     fetchCollectibles();
+    
+    alert("ok");
 }
 
 function getFormattedDate() {
