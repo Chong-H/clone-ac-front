@@ -37,7 +37,7 @@ import { store } from '@/store';
 
 // 初始化
 const fetchCollectibles = async (): Promise<void> => {
-    collectibles.value = (await getAllCollectiblesAPI()).data;
+    collectibles.value = ((await getAllCollectiblesAPI()).data).filter(collectible => ((collectible.status=="active")));
     console.log("A collectible is fetched: ", collectibles.value[0]);
 };
 onMounted(fetchCollectibles);

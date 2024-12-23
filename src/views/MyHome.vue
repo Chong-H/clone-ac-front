@@ -13,7 +13,7 @@
 
         <form>
             <button type="button" @click="Market">Go to Market</button>
-        </form> -->
+        </form> 
 
         
     </div>
@@ -235,11 +235,11 @@ function getFormattedDate() {
 
 .user-layout {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     gap: 1.5rem;
 }
 
-@media (min-width: 768px) {
+/* @media (min-width: 768px) {
     .user-layout {
         flex-direction: row;
         flex-wrap: wrap;
@@ -252,5 +252,5 @@ function getFormattedDate() {
     .edit-form {
         flex: 1 1 45%;
     }
-}
+} */
 </style>
