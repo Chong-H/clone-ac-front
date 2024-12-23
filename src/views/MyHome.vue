@@ -1,7 +1,20 @@
 <template>
     <div class="login-container">
         
-
+         <!-- 编辑表单 -->
+         <div  >
+                <h2>编辑用户自己信息</h2>
+                <form @submit.prevent="handleUpdateUser">
+                    <label>用户名:</label>
+                    <input v-model="currentUser1.username" placeholder="用户名" required />
+                    <label>邮箱:</label>
+                    <input v-model="currentUser1.email" type="email" placeholder="邮箱" required />
+                    <label>密码:</label>
+                    <input v-model="currentUser1.passwordHash" type="password" placeholder="密码" required />
+                    <button type="submit">更新</button>
+                    <button type="button" @click="handleCancelEdit">取消</button>
+                </form>
+            </div>
         
                 <p>User ID: {{ store.userId }}</p>
                 <!-- <button @click="updateUserId">Update User ID</button> -->
@@ -28,27 +41,42 @@
 import { onMounted, ref, type Ref } from 'vue';
 import { UserLoginDto } from '@/pojo/dto/UserLoginDto';
 import { User } from '@/pojo/User';
-import { userLoginAPI, updateCollectibleStatusAPI, getUserByIdAPI, getSessionUserAPI, logoutAPI } from '@/api';
+import { updateUserAPI,userLoginAPI, updateCollectibleStatusAPI, getUserByIdAPI, getSessionUserAPI, logoutAPI } from '@/api';
 import { DigitalCollectible } from '@/pojo/DigitalCollectible';
 import { DigitalCollectibleStatus } from '@/utils/DigitalCollectibleStatus';
 import CollectibleToOwner from '@/components/CollectibleToOwner.vue';
 import { store } from '@/store';
 import { addTransaction, createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import { useRouter } from 'vue-router';
-
+import { reactive } from 'vue';
 // 在 setup 中声明 router
 const router = useRouter();
-import { ref as vueRef } from 'vue';
+const isEditing = ref(false);
 const myComponentRef = ref(null);
 const init: Ref<boolean> = ref(true);
 const userLoginDto: Ref<UserLoginDto> = ref({ email: '', password: '' } as UserLoginDto);
 const user: Ref<User> = ref({} as User);
 const userCollectibles: Ref<DigitalCollectible[]> = ref([] as DigitalCollectible[]);
+    const currentUser: Ref<User> = ref({} as User);
+
+
 
 const recipientId = ref(0);
 const handleInputChange = (value: string) => {
     recipientId.value = parseInt(value, 10);
 };
+
+
+const handleCancelEdit = () => {
+    isEditing.value = false;
+    currentUser.value = {} as User;
+};
+
+const currentUser1 = reactive({
+  username: '',
+  email: '',
+  passwordHash: ''
+});
 
 onMounted(async () => {
     if (store.userId != -1) {
@@ -58,43 +86,16 @@ onMounted(async () => {
     init.value = false;
 });
 
-const handleLogin = async (): Promise<void> => {
-    console.log("User login: ", userLoginDto.value);
-    //await userLoginAPI(userLoginDto.value);
-    try {
-        await userLoginAPI(userLoginDto.value);
-    } catch (error) {
-        console.error("Login error:", error);
-        alert("Login failed!");
-        return;
-    }
-    //if (Response.status === 200) {
-    let id = (await getSessionUserAPI()).data;
-    user.value = (await getUserByIdAPI(id)).data;
-
-    if (user.value != null) {
-        alert("Login successfully!");
-        userCollectibles.value = user.value.collectibles;
-        store.userId = user.value.userId;
-        // 跳转到指定的 URL
-        router.push('/user-view');
-    } else if (user.value == -1) {
-        alert("Login failed!");
-    }
-    //alert("Login failed!");
+const handleUpdateUser = async (): Promise<void> => {
+    currentUser.value.username=currentUser1.username;
+    currentUser.value.email=currentUser1.email;
+    currentUser.value.passwordHash=currentUser1.passwordHash;
+  
+    await updateUserAPI(store.userId, currentUser.value);
+    
+    alert("修改成功");
 };
-
-async function handleSignup(): Promise<void> {
-    router.push('/sign');
-}
-
-
-async function handleLogout(): Promise<void> {
-    await logoutAPI();
-    store.userId = -1;
-    user.value = {} as User;
-    userCollectibles.value = [];
-}
+ 
 
 async function Market(): Promise<void> {
     // 跳转到指定的 URL
