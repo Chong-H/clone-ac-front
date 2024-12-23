@@ -17,8 +17,9 @@
                         class="input-field" />
                 </div>
                 <div class="button-group">
-                    <button type="button" @click="handleLogin" class="login-button">Login</button>
-                    <button type="button" @click="handleSignup" class="signup-button">sign up</button>
+                    <button type="button" @click="handleLogin" class="login-button">In</button>
+                    <button type="button" @click="handleLogout" class="signup-button">Out</button>
+                    <button type="button" @click="handleSignup" class="signup-button">Sign</button>
                 </div>
             </form>
 
@@ -356,7 +357,7 @@ function getFormattedDate() {
 
 /* 登录按钮 */
 .login-button {
-    width: 100%;
+    width: 30%;
     padding: 12px;
     background: linear-gradient(135deg, #ffa7d1, #ff8da1);
     border: none;
