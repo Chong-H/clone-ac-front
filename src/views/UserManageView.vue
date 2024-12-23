@@ -13,6 +13,7 @@
                 <button type="submit">提交</button>
             </form> -->
 
+            
             <!-- 查询用户拥有的藏品 -->
             <form @submit.prevent="handleQueryUserCollectibles" class="query-form">
                 <label>数字藏品查询页面</label>
@@ -51,6 +52,12 @@
                     <button type="button" @click="handleCancelEdit">取消</button>
                 </form>
             </div>
+            <div class="additional-links">
+                <a href="/digital-collectible-view">发行/修改藏品</a>
+                
+            </div>
+            
+            <a href="/user-view">用户管理</a>
         </div>
     </div>
 </template>
