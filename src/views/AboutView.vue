@@ -9,12 +9,12 @@
             <li>赵智宇</li>
             <li>张健涛</li>
         </ul>
-        
-    </div>
-    <div class="wrapper">
         <h3>Contact us</h3>
         <label >12345@qq.com</label>
     </div>
+    <!-- <div class="wrapper">
+        
+    </div> -->
 </template>
 
 <style scoped>
