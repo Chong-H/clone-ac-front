@@ -37,8 +37,17 @@ const fetchUsers = async (): Promise<void> => {
 };
 
 const handleSubmitUser = async (): Promise<void> => {
-    await createUserAPI(user.value);
+    try {
+        alert("success");
+        await createUserAPI(user.value);
+        
+    } catch (error) {
+        //alert("falled");
+        alert("falled,exist same account/邮箱");
+    }
+    
     fetchUsers();
+    
 };
 
 

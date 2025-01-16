@@ -4,10 +4,10 @@
         <label>{{ trans.collectibleId == null?null:trans.collectibleId}}    -   {{trans.transactionId}}</label>
         <label>交易日期</label>
         <label>{{ trans.transactionDate }}</label>
-        <label>卖家:是否已读</label>
-        <label>{{ trans.sellerId }}   : {{trans.ifReadBySeller}}</label>
-        <label>买家:是否已读</label>
-        <label>{{ trans.buyerId }}   : {{trans.ifReadByBuyer}}</label>
+        <label>卖家号码：{{ (trans.sellerId  ) }}  </label>
+        <label>是否读取交易记录 {{trans.ifReadBySeller ==1?"是":"否"}}</label>
+        <label>买家号码：{{ trans.buyerId }} </label>
+        <label>   是否读取交易记录： {{trans.ifReadByBuyer ==1?"是":"否"}}</label>
         
         <button @click="emit('read', trans)">知道了</button>
         <button @click="emit('unread', trans)">设为未读</button>

@@ -121,6 +121,7 @@ async function handleRead(trans: TransactionDto): Promise<void> {
     }
         // 假设editTransaction是一个异步函数，需要await
         await editTransaction(trans);
+      alert("成功已读消息");
     } catch (error) {
         // 错误处理逻辑
         alert("An error occurred while handling read transaction");
@@ -157,6 +158,7 @@ async function handleUnread(trans: TransactionDto): Promise<void> {
     }
         // 假设editTransaction是一个异步函数，需要await
         await editTransaction(trans);
+        alert("成功设为未读");
     } catch (error) {
         // 错误处理逻辑
         alert("An error occurred while handling unread transaction");

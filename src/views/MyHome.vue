@@ -96,9 +96,15 @@ async function handleChangeStatus(collectible: DigitalCollectible): Promise<void
     } else {
         status = DigitalCollectibleStatus.ACTIVE;
     }
-    await updateCollectibleStatusAPI(collectible.collectibleId, status);
-    let res = await getUserByIdAPI(user.value.userId);
-    user.value = res.data;
+    try {
+        await updateCollectibleStatusAPI(collectible.collectibleId, status);
+         let res = await getUserByIdAPI(user.value.userId);
+        user.value = res.data;
+        alert("成功改变状态");
+    } catch (error) {
+        alert("失败");
+    }
+    
 }
 
 async function handleSend(collectible: DigitalCollectible): Promise<void> {
