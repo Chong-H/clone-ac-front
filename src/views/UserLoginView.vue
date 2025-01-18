@@ -381,7 +381,7 @@ function getFormattedDate() {
     border: 1px solid #ddd;
     border-radius: 25px;
     font-size: 16px;
-    background-color: #f8f9fa;
+    background-color: #ff858561;
     transition: all 0.3s ease;
 }
 
