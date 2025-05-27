@@ -27,10 +27,15 @@
             <div class="additional-links">
                 <a href="/about">About Us</a>
                 <a href="/user-view">Admin</a>
+                <!-- FISCO-BCOS 按钮区域 -->
+                <button class="checkBlockNumber" @click="checkBlockNumber">查看区块数量</button>
+
+                <!-- 调用 FISCO-BCOS 的按钮 -->
+                <button @click="callFiscoBCOS" class="fisco-button">FISCO-BCOS 状态</button>
             </div>
         </div>
 
-       
+
     </div>
 </template>
 
@@ -46,7 +51,16 @@ import CollectibleToOwner from '@/components/CollectibleToOwner.vue';
 import { store } from '@/store';
 import { addTransaction, createCollectibleAPI, deleteCollectibleAPI, getAllCollectiblesAPI, updateCollectibleAPI } from '@/api';
 import { useRouter } from 'vue-router';
+//fisco bcos
 
+// import {Web3} from 'web3';
+// const web3 = new Web3(new Web3.providers.HttpProvider('/rpc')); // 前提是已设置代理
+import { ethers } from 'ethers';
+
+// const provider = new ethers.JsonRpcProvider('/rpc');
+const provider = new ethers.JsonRpcProvider('http://127.0.0.1:8545'); // ✅ 正确写法
+
+//
 // 在 setup 中声明 router
 const router = useRouter();
 import { ref as vueRef } from 'vue';
@@ -60,6 +74,92 @@ const recipientId = ref(0);
 const handleInputChange = (value: string) => {
     recipientId.value = parseInt(value, 10);
 };
+// 定义点击事件函数
+const getBlockNumber = async () => {
+  try {
+    const blockNumber = await provider.getBlockNumber()
+    alert(`当前区块高度是：${blockNumber}`)
+  } catch (err) {
+    console.error('获取区块高度失败:', err)
+    alert('获取失败，请检查控制台')
+  }
+}
+const checkBlockNumber = async (): Promise<void> => {
+    try {
+      const response = await fetch('/rpc', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          jsonrpc: '2.0',
+          method: 'getBlockNumber',
+          params: [],
+          id: 1
+        })
+      });
+
+      const data = await response.json();
+      if (data.result !== undefined) {
+        alert(`当前区块高度：${data.result}`);
+      } else {
+        alert('请求失败：' + JSON.stringify(data));
+      }
+    } catch (error) {
+      alert(`发生错误: ${error}`);
+    }
+    //   try {
+    //     const response = await fetch('/rpc', {
+    //       method: 'POST',
+    //       headers: {
+    //         'Content-Type': 'application/json',
+    //       },
+    //       body: JSON.stringify({
+    //         jsonrpc: '2.0',
+    //         method: 'getBlockNumber',
+    //         params: [],
+    //         id: 1,
+    //       }),
+    //     });
+
+    //     const data = await response.json();
+
+    //     if (data.result) {
+    //       alert(`当前区块高度为：${parseInt(data.result, 16)}`);
+    //     } else {
+    //       alert(`请求失败：${JSON.stringify(data.error || data)}`);
+    //     }
+    //   } catch (error) {
+    //     alert(`发生错误: ${error}`);
+    //     console.error(error);
+    //   }
+};
+
+async function callFiscoBCOS(): Promise<void> {
+    try {
+        const res = await fetch("/rpc", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                jsonrpc: "2.0",
+                method: "getClientVersion",
+                params: [],
+                id: 1,
+            }),
+        });
+
+        const data = await res.json();
+        const versionInfo = data.result;
+        console.log("FISCO-BCOS 版本信息:", versionInfo);
+        alert(`FISCO-BCOS 版本: ${versionInfo["FISCO-BCOS Version"]}\n构建时间: ${versionInfo["Build Time"]}`);
+
+    } catch (err) {
+        console.error("请求失败:", err);
+        alert("无法连接到 FISCO-BCOS 节点！");
+    }
+}
 
 onMounted(async () => {
     if (store.userId != -1) {
