@@ -20,7 +20,7 @@
             <h2>交易信息</h2>
         <div class="cards-wrapper">
             <TransactionRecordView v-for="trans in transHiss" :key="trans.transactionId ?? undefined" :trans="trans"
-                @read="handleRead" @unread="handleUnread" />
+                @read="handleRead" @unread="handleUnread" @checkTrade="handlecheck"/>
         </div>
 
         
@@ -29,14 +29,14 @@
         <div class="cards-wrapper">
             <TransactionRecordView v-for="trans in transHiss1" :key="trans.transactionId ?? undefined"
             
-        :trans="trans" @read="handleRead" @unread="handleUnread" />
+        :trans="trans" @read="handleRead" @unread="handleUnread" @checkTrade="handlecheck"/>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import { ref, onMounted, type Ref } from 'vue';
-import { editTransaction,getAllTransactions,createUserAPI, deleteUserAPI, getAllUsersAPI, getUserByIdAPI, updateUserAPI } from '@/api';
+import { editTransaction,cheakTrans,getAllTransactions,createUserAPI, deleteUserAPI, getAllUsersAPI, getUserByIdAPI, updateUserAPI } from '@/api';
 import { store } from '@/store'; 
 import { TransactionDto } from '@/pojo/dto/TransactionDto';
 import TransactionRecordView from '@/components/TransactionRecordView.vue';
@@ -170,7 +170,47 @@ async function handleUnread(trans: TransactionDto): Promise<void> {
     //location.href = location.href;
 }
 
+async function handlecheck(trans: TransactionDto): Promise<void> {
+    try {
+        let status;
+        if(trans.buyerId==store.userId){
+        if (trans.ifReadByBuyer == 1) {
+            trans.ifReadByBuyer = 0;
+        }
+    }
+    if(trans.sellerId==store.userId){
+        if (trans.ifReadBySeller == 1) {
+            trans.ifReadBySeller = 0;
+        }
+    }
+        // 假设editTransaction是一个异步函数，需要await
+        // await editTransaction(trans);
+        // alert("成功设为未读");
+        
+    if (trans.transactionId !== null) {
+    const result = await cheakTrans(trans.transactionId);
+    if(result.data.transactionId!=0){
+    alert(`交易信息：
+    交易ID: ${result.data.transactionId}
+    藏品ID: ${result.data.collectibleId}
+    买家ID: ${result.data.buyerId}
+    卖家ID: ${result.data.sellerId}
+    交易时间: ${result.data.transactionDate}`);
+    }else{
+        alert("Attention! fake Transation");
+    }
+}
+    } catch (error) {
+        // 错误处理逻辑
+        alert("Attention! Block Chain not Connected");
 
+        console.error('An error occurred while handling unread transaction:', error);
+        // 根据需要，可以在这里抛出错误或者返回错误信息
+        throw error; // 或者不抛出，根据业务逻辑决定
+    }
+
+    //location.href = location.href;
+}
 
 
 

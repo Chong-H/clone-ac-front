@@ -137,6 +137,23 @@ export const findTransaction = async (buyerId: Number): Promise<ResponseMessage<
 
 
 };
+
+export const cheakTrans = async (transactionId: Number): Promise<ResponseMessage<TransactionDto>> => {
+    try {
+        // 使用POST方法发送请求，并将transactionData作为请求体
+
+        const response = await axios.get(`${API_BASE_URL}/transaction/check/${transactionId}`);
+        // 假设后端返回的JSON可以直接转换为ResponseMessage实例
+        // 注意：这里不需要手动创建ResponseMessage实例，因为后端已经返回了完整的ResponseMessage对象
+        return response.data as ResponseMessage<TransactionDto>;
+    } catch (error) {
+        console.error('获取交易记录失败:', error);
+        throw error;
+    }
+
+
+
+};
 export const editTransaction = async (transactionData: TransactionDto): Promise<ResponseMessage<TransactionDto>> => {
     try {
         // 使用POST方法发送请求，并将transactionData作为请求体

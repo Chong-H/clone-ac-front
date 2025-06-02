@@ -11,6 +11,8 @@
         
         <button @click="emit('read', trans)">知道了</button>
         <button @click="emit('unread', trans)">设为未读</button>
+        <!-- 新增按钮 -->
+        <button @click="emit('checkTrade', trans)">确认交易真实性</button>
     </div>
 </template>
 
@@ -29,6 +31,7 @@ const {
 const emit = defineEmits<{
     (event: 'read', trans: TransactionDto): void,
     (event: 'unread', trans: TransactionDto): void,
+    (event: 'checkTrade', trans: TransactionDto): void,
 
 }>();
 
