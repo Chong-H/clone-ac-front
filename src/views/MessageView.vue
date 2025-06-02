@@ -189,7 +189,7 @@ async function handlecheck(trans: TransactionDto): Promise<void> {
         
     if (trans.transactionId !== null) {
     const result = await cheakTrans(trans.transactionId);
-    if(result.data.transactionId!=0){
+    if(result.data.transactionId>0){
     alert(`交易信息：
     交易ID: ${result.data.transactionId}
     藏品ID: ${result.data.collectibleId}
